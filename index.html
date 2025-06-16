@@ -10,17 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Earthen Tech -->
-    <!-- Application Structure Plan: The SPA is structured as a top-to-bottom investment narrative, guiding the user from the macro problem to the micro solution and its market potential. This linear flow is the most logical way to build a compelling case for an investor. It starts with the "Why" (Egypt's Water Crisis), moves to the "What" (The Core Solution), then dives deep into the "How" (The Engineering & Technology), proves its value with "Proof Points" (Impact & Compliance), offers a "Summary" for quick review, details the "Opportunity" (Investment Features), presents a "Critical Analysis" (SWOT), and finishes with the "Roadmap". This structure was chosen to make a complex technical and business proposal digestible and persuasive, with interactive elements designed to unpack detail on demand. -->
+    <!-- Application Structure Plan: The SPA is structured as a top-to-bottom investment narrative. The reordered flow guides the user from the macro problem to the micro solution, builds credibility with tech and data, presents the opportunity and risks, outlines the execution plan (Roadmap), and concludes with a powerful Summary and a list of References. This makes the proposal more digestible, persuasive, and credible. -->
     <!-- Visualization & Content Choices: 
         - Egypt's Water Crisis: Goal=Inform/Impact. Viz=Key Stats & Line Chart (Chart.js). Interaction=Animated stats. Justification=Quickly establishes the problem's scale and urgency.
         - System Architecture: Goal=Organize/Explain. Viz=HTML/Tailwind diagram. Interaction=Click-to-reveal details on each component. Justification=Breaks down the system into understandable, interactive parts.
         - Technology Deep Dive: Goal=Compare/Explain Detail. Viz=Interactive cards/tabs for CW vs. MBR, icon-based grids for IoT/AI. Interaction=Click to toggle between detailed specs. Justification=Makes the dense technical data from Table 1 and the engineering section accessible and easy to compare.
         - ECP 501-2015 Navigator: Goal=Organize/Inform. Viz=Button-based filter. Interaction=Click grade to see allowed crops. Justification=Turns a complex regulatory table into a simple, useful tool.
         - Case Study Benefits: Goal=Compare/Prove. Viz=Grouped Bar Chart (Chart.js). Interaction=Tooltips on hover. Justification=Visually aggregates the proof points from global case studies.
-        - Summary Section: Goal=Synthesize/Recap. Viz=Structured text with icons. Interaction=None. Justification=Provides a scannable, high-level overview of the entire report for quick reference.
         - Investment Features: Goal=Inform. Viz=Static info cards. Interaction=None. Justification=Presents key value-add features in a clear, direct, and easily scannable format.
         - Critical Analysis: Goal=Analyze. Viz=Structured text and a summary table. Interaction=None. Justification=Provides a balanced SWOT analysis to address potential investor concerns.
         - Roadmap: Goal=Show Change. Viz=Interactive Accordion. Interaction=Click to expand phase details. Justification=Provides a clear, high-level overview of the project's future with on-demand detail.
+        - Summary Section: Goal=Synthesize/Recap. Viz=Structured text with icons. Interaction=None. Justification=Provides a scannable, high-level overview of the entire report as a final takeaway.
+        - References Section: Goal=Validate/Credit. Viz=Formatted list. Interaction=External links. Justification=Enhances credibility and allows for deeper research.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -80,6 +81,14 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .reference-link {
+            color: #2563eb;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .reference-link:hover {
+            color: #1d4ed8;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -94,15 +103,16 @@
                     <p class="text-xs text-gray-500 leading-tight">AI-Powered Greywater Recycling</p>
                 </div>
             </div>
-            <div class="hidden md:flex space-x-4 lg:space-x-6 text-sm">
+            <div class="hidden md:flex space-x-3 lg:space-x-4 text-xs lg:text-sm">
                 <a href="#challenge" class="nav-link pb-1">The Challenge</a>
                 <a href="#solution" class="nav-link pb-1">The Solution</a>
                 <a href="#engineering" class="nav-link pb-1">Engineering</a>
                 <a href="#impact" class="nav-link pb-1">Impact</a>
                 <a href="#investment" class="nav-link pb-1">Opportunity</a>
                 <a href="#analysis" class="nav-link pb-1">Analysis</a>
-                <a href="#summary" class="nav-link pb-1">Summary</a>
                 <a href="#roadmap" class="nav-link pb-1">Roadmap</a>
+                <a href="#summary" class="nav-link pb-1">Summary</a>
+                <a href="#references" class="nav-link pb-1">References</a>
             </div>
              <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500">
                 <div class="w-6 h-0.5 bg-gray-700 mb-1"></div>
@@ -117,8 +127,9 @@
             <a href="#impact" class="block py-2 nav-link">Impact</a>
             <a href="#investment" class="block py-2 nav-link">Opportunity</a>
             <a href="#analysis" class="block py-2 nav-link">Analysis</a>
-            <a href="#summary" class="block py-2 nav-link">Summary</a>
             <a href="#roadmap" class="block py-2 nav-link">Roadmap</a>
+            <a href="#summary" class="block py-2 nav-link">Summary</a>
+            <a href="#references" class="block py-2 nav-link">References</a>
         </div>
     </header>
 
@@ -330,7 +341,7 @@
             </div>
         </section>
 
-        <!-- New Section: Critical Analysis -->
+        <!-- Section 6: Critical Analysis -->
         <section id="analysis" class="mb-20 md:mb-32 scroll-mt-20">
             <div class="text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Critical Analysis: SWOT & Strategy</h2>
@@ -385,63 +396,9 @@
                  </div>
             </div>
         </section>
-        
-        <!-- Section 7: Summary -->
-        <section id="summary" class="mb-20 md:mb-32 scroll-mt-20">
-             <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Project Summary: At a Glance</h2>
-                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   A high-level overview of the entire feasibility and investment analysis, from the core problem to the strategic recommendations.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal space-y-8">
-                <div>
-                    <h3 class="font-bold text-xl mb-3 text-amber-600">🟠 Section I: The Urgency of Water Innovation</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li>Egypt's per capita water is ~610 m³/year, well below the UN's 1,000 m³ water poverty line.</li>
-                        <li>Agriculture consumes up to 85% of water, largely through inefficient methods.</li>
-                        <li>The GERD threatens to reduce Nile flow, potentially impacting 2 million acres of farmland.</li>
-                        <li>Government strategy actively promotes reuse of treated wastewater, creating policy support.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-xl mb-3 text-green-600">🟢 Section II & III: The Solution & Tech Enhancements</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li><strong class="font-semibold">Core Concept:</strong> A self-sufficient, solar-powered greywater recycling system with AI-driven irrigation.</li>
-                        <li><strong class="font-semibold">Tech Upgrade:</strong> Move from basic filters to a tiered offering of <strong class="font-semibold">Constructed Wetlands (CW)</strong> for low-grade water and <strong class="font-semibold">Membrane Bioreactors (MBR)</strong> for high-grade, food-safe water.</li>
-                         <li><strong class="font-semibold">IoT Overhaul:</strong> Replace Wi-Fi with <strong class="font-semibold">LoRaWAN®</strong> for long-range connectivity and upgrade sensors to include soil EC (salinity) and NPK (nutrients).</li>
-                         <li><strong class="font-semibold">AI & Power:</strong> Implement a 3-layer AI (Reactive, Predictive, Prescriptive) and engineer the solar system with <strong class="font-semibold">LiFePO₄</strong> batteries for 3-5 days of autonomy.</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h3 class="font-bold text-xl mb-3 text-purple-600">🟣 Section IV: Regulatory & Practical Deployment</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li><strong class="font-semibold">ECP 501-2015 is key:</strong> The system must be modular to match treatment grade (A, B, C, D) with the legally permitted crop type.</li>
-                        <li><strong class="font-semibold">Proven Results:</strong> Case studies (Madinaty, Delta Agrar) show smart irrigation saves 17-50% of water and up to 75% of labor.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-xl mb-3" style="color: #6d4c41;">🟤 Section V: Investment & Business Strategy</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                         <li><strong class="font-semibold">Feature Expansion:</strong> Add high-value services like AI-driven pest detection and precision fertigation.</li>
-                         <li><strong class="font-semibold">New Revenue:</strong> Monetize sustainability by generating and selling certified carbon credits (e.g., via Gold Standard or Verra).</li>
-                         <li><strong class="font-semibold">Business Model:</strong> Shift from high-CAPEX sales to a subscription-based <strong class="font-semibold">"AgriTech-as-a-Service"</strong> model for predictable, scalable revenue.</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h3 class="font-bold text-xl mb-3 text-red-600">✅ Section VI: Roadmap & Conclusion</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                         <li><strong class="font-semibold">Phase 1 (Pilot):</strong> Validate MVP with a partner farm in a water-stressed region like Beni Suef.</li>
-                         <li><strong class="font-semibold">Phase 2 (Commercialize):</strong> Launch modular CW/MBR systems and begin carbon credit certification.</li>
-                         <li><strong class="font-semibold">Phase 3 (Scale):</strong> Expand nationwide, roll out premium AI features, and transition fully to a service model.</li>
-                         <li><strong class="font-semibold">Conclusion:</strong> The project is vital and feasible, offering a path to profitable, climate-resilient agriculture for Egypt.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
 
-        <!-- Section 6: Roadmap -->
-        <section id="roadmap" class="scroll-mt-20">
+        <!-- Section 7: Roadmap -->
+        <section id="roadmap" class="mb-20 md:mb-32 scroll-mt-20">
             <div class="text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Strategic Roadmap to Success</h2>
                  <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
@@ -491,6 +448,99 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Section 8: Summary -->
+        <section id="summary" class="mb-20 md:mb-32 scroll-mt-20">
+             <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Project Summary: At a Glance</h2>
+                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   A final, high-level overview of the entire feasibility and investment analysis, from the core problem to the strategic recommendations.
+                </p>
+            </div>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal space-y-8">
+                <div>
+                    <h3 class="font-bold text-xl mb-3 text-amber-600">🟠 Section I: The Urgency of Water Innovation</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Egypt's per capita water is ~610 m³/year, well below the UN's 1,000 m³ water poverty line.</li>
+                        <li>Agriculture consumes up to 85% of water, largely through inefficient methods.</li>
+                        <li>The GERD threatens to reduce Nile flow, potentially impacting 2 million acres of farmland.</li>
+                        <li>Government strategy actively promotes reuse of treated wastewater, creating policy support.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xl mb-3 text-green-600">🟢 Section II & III: The Solution & Tech Enhancements</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Core Concept:</strong> A self-sufficient, solar-powered greywater recycling system with AI-driven irrigation.</li>
+                        <li><strong class="font-semibold">Tech Upgrade:</strong> Move from basic filters to a tiered offering of <strong class="font-semibold">Constructed Wetlands (CW)</strong> for low-grade water and <strong class="font-semibold">Membrane Bioreactors (MBR)</strong> for high-grade, food-safe water.</li>
+                         <li><strong class="font-semibold">IoT Overhaul:</strong> Replace Wi-Fi with <strong class="font-semibold">LoRaWAN®</strong> for long-range connectivity and upgrade sensors to include soil EC (salinity) and NPK (nutrients).</li>
+                         <li><strong class="font-semibold">AI & Power:</strong> Implement a 3-layer AI (Reactive, Predictive, Prescriptive) and engineer the solar system with <strong class="font-semibold">LiFePO₄</strong> batteries for 3-5 days of autonomy.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-xl mb-3 text-purple-600">🟣 Section IV: Regulatory & Practical Deployment</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">ECP 501-2015 is key:</strong> The system must be modular to match treatment grade (A, B, C, D) with the legally permitted crop type.</li>
+                        <li><strong class="font-semibold">Proven Results:</strong> Case studies (Madinaty, Delta Agrar) show smart irrigation saves 17-50% of water and up to 75% of labor.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xl mb-3" style="color: #6d4c41;">🟤 Section V: Investment & Business Strategy</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                         <li><strong class="font-semibold">Feature Expansion:</strong> Add high-value services like AI-driven pest detection and precision fertigation.</li>
+                         <li><strong class="font-semibold">New Revenue:</strong> Monetize sustainability by generating and selling certified carbon credits (e.g., via Gold Standard or Verra).</li>
+                         <li><strong class="font-semibold">Business Model:</strong> Shift from high-CAPEX sales to a subscription-based <strong class="font-semibold">"AgriTech-as-a-Service"</strong> model for predictable, scalable revenue.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-xl mb-3 text-red-600">✅ Section VI: Roadmap & Conclusion</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                         <li><strong class="font-semibold">Phase 1 (Pilot):</strong> Validate MVP with a partner farm in a water-stressed region like Beni Suef.</li>
+                         <li><strong class="font-semibold">Phase 2 (Commercialize):</strong> Launch modular CW/MBR systems and begin carbon credit certification.</li>
+                         <li><strong class="font-semibold">Phase 3 (Scale):</strong> Expand nationwide, roll out premium AI features, and transition fully to a service model.</li>
+                         <li><strong class="font-semibold">Conclusion:</strong> The project is vital and feasible, offering a path to profitable, climate-resilient agriculture for Egypt.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: References -->
+        <section id="references" class="scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">References</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                    The following sources were consulted to provide the data, analysis, and case studies presented in this report.
+                </p>
+            </div>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                <ol class="list-decimal list-inside space-y-4 text-sm text-gray-700">
+                    <li>(1, 5, 33) Ministry of Water Resources and Irrigation (MWRI), Egypt. "National Water Resources Plan (NWRP 2017-2037)." <a href="https://www.fao.org/aquastat/en/countries-and-basins/country-profiles/country/EGY" target="_blank" rel="noopener noreferrer" class="reference-link">(Link to FAO Summary)</a></li>
+                    <li>(2) World Bank. "Egypt Country Climate and Development Report." 2022. <a href="https://www.worldbank.org/en/country/egypt/publication/country-climate-and-development-report" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(3) Human Rights Watch. "'We Are a Land of the Thirsty': The Precarious Right to Water in Egypt." 2024. <a href="https://www.hrw.org/report/2024/04/23/we-are-land-thirsty/precarious-right-water-egypt" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(4) El-Ramady, H., et al. "Sustainable Agriculture and Climate Change in Egypt." 2013.</li>
+                    <li>(6) Foundational Project Document. "Smart Greywater Recycling System for Agricultural Lands." 2024.</li>
+                    <li>(7, 25) Aqeel, M., et al. "A review of the state of the art in smart agriculture." 2023.</li>
+                    <li>(8, 21) Popović, T., et al. "A Case Study of an Autonomous Irrigation System Based on IoT." 2021. <a href="https://www.mdpi.com/2073-4395/11/12/2485" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(9) El-Kholy, M. "Smart Irrigation System for Madinaty." 2021. <a href="https://www.researchgate.net/publication/356507727_Smart_Irrigation_System_for_Madinaty_A_case_study_for_a_huge_residential_compound" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(10, 12, 14, 16) Stefanakis, A. "The Role of Constructed Wetlands as Green Infrastructure for Sustainable Urban Water Management." 2019.</li>
+                    <li>(11, 13, 17) Friedler, E., et al. "The reuse of greywater for irrigation." 2013.</li>
+                    <li>(15, 18, 19, 20) Fountoulakis, M. S., et al. "Effect of hydraulic retention time on the performance of a sequencing batch reactor and a membrane bioreactor." 2010.</li>
+                    <li>(22, 23, 24) Kuşçu, H., & Tırtıl, A. "A review on the use of optical sensors in precision agriculture." 2022.</li>
+                    <li>(26, 27) Haider, S., et al. "A Review of Artificial Intelligence and IoT in Agriculture." 2023.</li>
+                    <li>(28, 29, 30) National Renewable Energy Laboratory (NREL). "Off-Grid Solar Power Systems: Sizing and Design." <a href="https://www.nrel.gov/research/publications.html" target="_blank" rel="noopener noreferrer" class="reference-link">(General Link)</a></li>
+                    <li>(31) Boxwell, M. "Solar Electricity Handbook."</li>
+                    <li>(32, 34, 35) Housing and Building National Research Center (HBRC), Egypt. "Egyptian Code of Practice for the Agricultural Use of Treated Wastewater (ECP 501-2015)."</li>
+                    <li>(36) Kumar, A., et al. "Performance evaluation of solar powered smart irrigation system in desert area of India." 2020.</li>
+                    <li>(37) Husa, D., et al. "Smart Irrigation System Based On Internet Of Things." 2021.</li>
+                    <li>(38) Blois, M. "Smart irrigation helps Washington apple growers cut water use by 52%." 2019.</li>
+                    <li>(39, 41, 43) Saleem, M. H., et al. "A Comprehensive Survey of Recent Trends in Deep Learning for Digital Scab Disease Detection in Plants." 2019.</li>
+                    <li>(40, 42, 44, 45) Fuentes, A., et al. "A robust deep-learning-based detector for real-time tomato plant diseases and pests recognition." 2017.</li>
+                    <li>(46) Semios. "Precision Agriculture." <a href="https://semios.com/" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(47, 48, 53) Verra. "Verified Carbon Standard (VCS)." <a href="https://verra.org/programs/verified-carbon-standard/" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(49, 50, 51, 52) Gold Standard. "Agriculture." <a href="https://www.goldstandard.org/our-work/scope/agriculture" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                    <li>(54) The Nature Conservancy. "Water Share." <a href="https://www.nature.org/en-us/what-we-do/our-insights/perspectives/water-share-colorado-river/" target="_blank" rel="noopener noreferrer" class="reference-link">(Link)</a></li>
+                </ol>
             </div>
         </section>
 
