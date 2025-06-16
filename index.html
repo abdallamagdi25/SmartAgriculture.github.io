@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Earthen Tech -->
-    <!-- Application Structure Plan: The SPA is structured as a top-to-bottom investment narrative, guiding the user from the macro problem to the micro solution and its market potential. This linear flow is the most logical way to build a compelling case for an investor. It starts with the "Why" (Egypt's Water Crisis), moves to the "What" (The Core Solution), then dives deep into the "How" (The Engineering & Technology), proves its value with "Proof Points" (Impact & Compliance), offers a "Summary" for quick review, details the "Opportunity" (Investment Features), and finishes with the "Roadmap". This structure was chosen to make a complex technical and business proposal digestible and persuasive, with interactive elements designed to unpack detail on demand. -->
+    <!-- Application Structure Plan: The SPA is structured as a top-to-bottom investment narrative, guiding the user from the macro problem to the micro solution and its market potential. This linear flow is the most logical way to build a compelling case for an investor. It starts with the "Why" (Egypt's Water Crisis), moves to the "What" (The Core Solution), then dives deep into the "How" (The Engineering & Technology), proves its value with "Proof Points" (Impact & Compliance), offers a "Summary" for quick review, details the "Opportunity" (Investment Features), presents a "Critical Analysis" (SWOT), and finishes with the "Roadmap". This structure was chosen to make a complex technical and business proposal digestible and persuasive, with interactive elements designed to unpack detail on demand. -->
     <!-- Visualization & Content Choices: 
         - Egypt's Water Crisis: Goal=Inform/Impact. Viz=Key Stats & Line Chart (Chart.js). Interaction=Animated stats. Justification=Quickly establishes the problem's scale and urgency.
         - System Architecture: Goal=Organize/Explain. Viz=HTML/Tailwind diagram. Interaction=Click-to-reveal details on each component. Justification=Breaks down the system into understandable, interactive parts.
@@ -19,6 +19,7 @@
         - Case Study Benefits: Goal=Compare/Prove. Viz=Grouped Bar Chart (Chart.js). Interaction=Tooltips on hover. Justification=Visually aggregates the proof points from global case studies.
         - Summary Section: Goal=Synthesize/Recap. Viz=Structured text with icons. Interaction=None. Justification=Provides a scannable, high-level overview of the entire report for quick reference.
         - Investment Features: Goal=Inform. Viz=Static info cards. Interaction=None. Justification=Presents key value-add features in a clear, direct, and easily scannable format.
+        - Critical Analysis: Goal=Analyze. Viz=Structured text and a summary table. Interaction=None. Justification=Provides a balanced SWOT analysis to address potential investor concerns.
         - Roadmap: Goal=Show Change. Viz=Interactive Accordion. Interaction=Click to expand phase details. Justification=Provides a clear, high-level overview of the project's future with on-demand detail.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
@@ -93,12 +94,13 @@
                     <p class="text-xs text-gray-500 leading-tight">AI-Powered Greywater Recycling</p>
                 </div>
             </div>
-            <div class="hidden md:flex space-x-6 lg:space-x-8">
+            <div class="hidden md:flex space-x-4 lg:space-x-6 text-sm">
                 <a href="#challenge" class="nav-link pb-1">The Challenge</a>
                 <a href="#solution" class="nav-link pb-1">The Solution</a>
                 <a href="#engineering" class="nav-link pb-1">Engineering</a>
                 <a href="#impact" class="nav-link pb-1">Impact</a>
                 <a href="#investment" class="nav-link pb-1">Opportunity</a>
+                <a href="#analysis" class="nav-link pb-1">Analysis</a>
                 <a href="#summary" class="nav-link pb-1">Summary</a>
                 <a href="#roadmap" class="nav-link pb-1">Roadmap</a>
             </div>
@@ -114,6 +116,7 @@
             <a href="#engineering" class="block py-2 nav-link">Engineering</a>
             <a href="#impact" class="block py-2 nav-link">Impact</a>
             <a href="#investment" class="block py-2 nav-link">Opportunity</a>
+            <a href="#analysis" class="block py-2 nav-link">Analysis</a>
             <a href="#summary" class="block py-2 nav-link">Summary</a>
             <a href="#roadmap" class="block py-2 nav-link">Roadmap</a>
         </div>
@@ -324,6 +327,62 @@
                     <h4 class="font-bold text-xl mb-2">Carbon Credit Revenue</h4>
                     <p class="text-gray-600 text-sm">Solar power and water savings generate tradable carbon credits, creating a new revenue stream for the farm.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- New Section: Critical Analysis -->
+        <section id="analysis" class="mb-20 md:mb-32 scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Critical Analysis: SWOT & Strategy</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                    A balanced analysis of the project's strengths, weaknesses, opportunities, and threats, alongside clear strategies to mitigate risks and capitalize on advantages.
+                </p>
+            </div>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-2xl font-bold text-green-600 mb-4">STRENGTHS (Competitive Advantages)</h3>
+                        <ul class="space-y-4">
+                            <li><strong class="font-semibold block">1. Solves a Critical National Crisis:</strong> Addresses Egypt's severe water scarcity and agricultural waste. <em class="block text-sm text-gray-500 mt-1">Implementation: Partner with MWRI; target water-stressed regions like Fayoum.</em></li>
+                            <li><strong class="font-semibold block">2. Strong Regulatory Fit:</strong> Aligns with ECP 501-2015, which encourages treated wastewater reuse. <em class="block text-sm text-gray-500 mt-1">Implementation: Design modular filtration (CW vs. MBR) and seek official certification.</em></li>
+                            <li><strong class="font-semibold block">3. Proven Technology:</strong> IoT irrigation has demonstrated up to 50% water savings in local case studies. <em class="block text-sm text-gray-500 mt-1">Implementation: Use reliable off-the-shelf sensors and start with proven filtration methods.</em></li>
+                            <li><strong class="font-semibold block">4. Multiple Revenue Streams:</strong> More sustainable than one-time hardware sales. <em class="block text-sm text-gray-500 mt-1">Implementation: Use a subscription model and sell carbon credits via Gold Standard.</em></li>
+                             <li><strong class="font-semibold block">5. Scalable & Modular:</strong> Adaptable for both smallholders and large agribusinesses. <em class="block text-sm text-gray-500 mt-1">Implementation: Offer a low-cost "Basic" CW version and a high-spec "Pro" MBR version.</em></li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-bold text-red-600 mb-4">WEAKNESSES (Risks & Challenges)</h3>
+                        <ul class="space-y-4">
+                            <li><strong class="font-semibold block">1. High Upfront Costs:</strong> MBR systems can be expensive for farmers. <em class="block text-sm text-gray-500 mt-1">Solution: Start with low-cost pilots and seek grants; offer a service model to eliminate farmer CAPEX.</em></li>
+                            <li><strong class="font-semibold block">2. Farmer Resistance to New Tech:</strong> Traditional farmers may be hesitant to adopt automation. <em class="block text-sm text-gray-500 mt-1">Solution: Offer free pilot trials to demonstrate clear ROI; provide comprehensive training.</em></li>
+                            <li><strong class="font-semibold block">3. Maintenance & Fouling:</strong> Filters and membranes require regular upkeep. <em class="block text-sm text-gray-500 mt-1">Solution: Build automated cleaning alerts into the app; include maintenance in the subscription fee.</em></li>
+                            <li><strong class="font-semibold block">4. Dependence on Solar Power:</strong> Panel efficiency can be reduced by dust and sand. <em class="block text-sm text-gray-500 mt-1">Solution: Use panels with self-cleaning coatings and a robust LiFePO₄ battery backup for 3-5 days.</em></li>
+                            <li><strong class="font-semibold block">5. Limited Initial AI Data:</strong> Predictive models need data to become accurate. <em class="block text-sm text-gray-500 mt-1">Solution: Start with rule-based triggers and gradually train the AI by integrating weather and satellite data.</em></li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-12 pt-8 border-t">
+                     <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Implementation Strategy & SWOT Summary</h3>
+                     <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="p-3 font-semibold">Category</th>
+                                    <th class="p-3 font-semibold">Factor</th>
+                                    <th class="p-3 font-semibold">Mitigation / Capitalization Strategy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3 text-green-600 font-bold">Strength</td><td class="p-3">Solves water crisis</td><td class="p-3">Partner with government (MWRI) and align with National Water Strategy 2017-2037.</td></tr>
+                                <tr class="border-b"><td class="p-3 text-green-600 font-bold">Strength</td><td class="p-3">Multiple revenue streams</td><td class="p-3">Focus on subscription model ("AgriTech-as-a-Service") plus carbon credit sales.</td></tr>
+                                <tr class="border-b"><td class="p-3 text-red-600 font-bold">Weakness</td><td class="p-3">High upfront costs</td><td class="p-3">Start with low-cost CW systems for pilot phase; use subscription model to reduce barrier to entry.</td></tr>
+                                <tr class="border-b"><td class="p-3 text-red-600 font-bold">Weakness</td><td class="p-3">Farmer's tech resistance</td><td class="p-3">Run free, hands-on pilot programs with local cooperatives to build trust and demonstrate ROI.</td></tr>
+                                <tr class="border-b"><td class="p-3 text-blue-600 font-bold">Opportunity</td><td class="p-3">Carbon credit market</td><td class="p-3">Engage a developer early to certify the system via Gold Standard or Verra for high-quality credits.</td></tr>
+                                <tr class="border-b"><td class="p-3 text-orange-600 font-bold">Threat</td><td class="p-3">Competition</td><td class="p-3">Focus on hyper-local needs (ECP 501-2015 compliance) and build a superior, integrated service model.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
             </div>
         </section>
         
