@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Interactive Report: Smart Greywater Recycling System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthen Tech -->
+    <!-- Application Structure Plan: The SPA is structured as a top-to-bottom investment narrative, guiding the user from the macro problem to the micro solution and its market potential. This linear flow is the most logical way to build a compelling case for an investor. It starts with the "Why" (Egypt's Water Crisis), moves to the "What" (The Core Solution), then dives deep into the "How" (The Engineering & Technology), proves its value with "Proof Points" (Impact & Compliance), offers a "Summary" for quick review, details the "Opportunity" (Investment Features), and finishes with the "Roadmap". This structure was chosen to make a complex technical and business proposal digestible and persuasive, with interactive elements designed to unpack detail on demand. -->
+    <!-- Visualization & Content Choices: 
+        - Egypt's Water Crisis: Goal=Inform/Impact. Viz=Key Stats & Line Chart (Chart.js). Interaction=Animated stats. Justification=Quickly establishes the problem's scale and urgency.
+        - System Architecture: Goal=Organize/Explain. Viz=HTML/Tailwind diagram. Interaction=Click-to-reveal details on each component. Justification=Breaks down the system into understandable, interactive parts.
+        - Technology Deep Dive: Goal=Compare/Explain Detail. Viz=Interactive cards/tabs for CW vs. MBR, icon-based grids for IoT/AI. Interaction=Click to toggle between detailed specs. Justification=Makes the dense technical data from Table 1 and the engineering section accessible and easy to compare.
+        - ECP 501-2015 Navigator: Goal=Organize/Inform. Viz=Button-based filter. Interaction=Click grade to see allowed crops. Justification=Turns a complex regulatory table into a simple, useful tool.
+        - Case Study Benefits: Goal=Compare/Prove. Viz=Grouped Bar Chart (Chart.js). Interaction=Tooltips on hover. Justification=Visually aggregates the proof points from global case studies.
+        - Summary Section: Goal=Synthesize/Recap. Viz=Structured text with icons. Interaction=None. Justification=Provides a scannable, high-level overview of the entire report for quick reference.
+        - Investment Features: Goal=Inform. Viz=Static info cards. Interaction=None. Justification=Presents key value-add features in a clear, direct, and easily scannable format.
+        - Roadmap: Goal=Show Change. Viz=Interactive Accordion. Interaction=Click to expand phase details. Justification=Provides a clear, high-level overview of the project's future with on-demand detail.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 400px;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #277055;
+            border-bottom-color: #277055;
+        }
+        .tech-tab {
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .tech-tab.active {
+            border-bottom-color: #277055;
+            color: #277055;
+            font-weight: 700;
+        }
+        .roadmap-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .roadmap-item.active .roadmap-content {
+            max-height: 500px; /* Adjust as needed */
+            padding-top: 1rem;
+            padding-bottom: 1.5rem;
+        }
+        .roadmap-item.active .roadmap-arrow {
+            transform: rotate(90deg);
+        }
+        .roadmap-arrow {
+            transition: transform 0.3s;
+        }
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl" style="color: #277055;">🌿</span>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-800 leading-tight">Smart Agriculture</h1>
+                    <p class="text-xs text-gray-500 leading-tight">AI-Powered Greywater Recycling</p>
+                </div>
+            </div>
+            <div class="hidden md:flex space-x-6 lg:space-x-8">
+                <a href="#challenge" class="nav-link pb-1">The Challenge</a>
+                <a href="#solution" class="nav-link pb-1">The Solution</a>
+                <a href="#engineering" class="nav-link pb-1">Engineering</a>
+                <a href="#impact" class="nav-link pb-1">Impact</a>
+                <a href="#investment" class="nav-link pb-1">Opportunity</a>
+                <a href="#summary" class="nav-link pb-1">Summary</a>
+                <a href="#roadmap" class="nav-link pb-1">Roadmap</a>
+            </div>
+             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500">
+                <div class="w-6 h-0.5 bg-gray-700 mb-1"></div>
+                <div class="w-6 h-0.5 bg-gray-700 mb-1"></div>
+                <div class="w-6 h-0.5 bg-gray-700"></div>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 border-t">
+            <a href="#challenge" class="block py-2 nav-link">The Challenge</a>
+            <a href="#solution" class="block py-2 nav-link">The Solution</a>
+            <a href="#engineering" class="block py-2 nav-link">Engineering</a>
+            <a href="#impact" class="block py-2 nav-link">Impact</a>
+            <a href="#investment" class="block py-2 nav-link">Opportunity</a>
+            <a href="#summary" class="block py-2 nav-link">Summary</a>
+            <a href="#roadmap" class="block py-2 nav-link">Roadmap</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <!-- Section 1: The Challenge -->
+        <section id="challenge" class="text-center mb-20 md:mb-32 scroll-mt-20">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 reveal">Egypt's Water Crisis: An Agricultural Imperative</h1>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                Egypt faces a critical water scarcity issue that threatens its food security and economic stability. The agricultural sector, vital to the nation's livelihood, is the largest consumer of water, making innovation in irrigation not just an opportunity, but a necessity for survival.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal">
+                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="water-per-capita">610 m³</h3>
+                    <p class="text-gray-700 font-medium">Per Capita Water Availability</p>
+                    <p class="text-sm text-gray-500 mt-2">Below UN water poverty line</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal" style="transition-delay: 150ms;">
+                    <h3 class="text-4xl font-bold text-green-700 mb-2" id="agri-water-usage">~80%</h3>
+                    <p class="text-gray-700 font-medium">Agriculture Water Consumption</p>
+                     <p class="text-sm text-gray-500 mt-2">Driven by inefficient methods</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal" style="transition-delay: 300ms;">
+                    <h3 class="text-4xl font-bold text-red-600 mb-2" id="food-imports">~55%</h3>
+                    <p class="text-gray-700 font-medium">Food Import Dependency</p>
+                    <p class="text-sm text-gray-500 mt-2">Grows as water availability declines</p>
+                </div>
+            </div>
+             <div class="bg-white p-4 md:p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">Projected Decline in Water Availability</h3>
+                 <div class="chart-container max-w-4xl h-80">
+                    <canvas id="waterCrisisChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Solution -->
+        <section id="solution" class="mb-20 md:mb-32 scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">The Integrated System: A Closed-Loop Solution</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   This project proposes a self-sufficient, smart system that recycles greywater for agriculture. It combines water purification, solar power, and AI-driven automation into a single, cohesive ecosystem. Click on each component below to learn more about its role in creating a sustainable farming solution.
+                </p>
+            </div>
+            <div class="w-full bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 space-y-4">
+                        <div id="solution-1" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4">
+                           <span class="text-3xl bg-blue-100 text-blue-600 p-3 rounded-full">💧</span>
+                           <div>
+                               <h4 class="text-xl font-bold text-gray-800">1. Greywater Collection</h4>
+                               <p class="text-gray-600 hidden solution-desc">Captures wastewater from sinks, showers, and laundry to create a consistent, on-site water source.</p>
+                           </div>
+                        </div>
+                        <div id="solution-2" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4">
+                           <span class="text-3xl bg-purple-100 text-purple-600 p-3 rounded-full">🔬</span>
+                           <div>
+                                <h4 class="text-xl font-bold text-gray-800">2. Multi-Stage Filtration</h4>
+                                <p class="text-gray-600 hidden solution-desc">Purifies water using a modular treatment train (e.g., CW or MBR) to meet specific agricultural quality standards.</p>
+                           </div>
+                        </div>
+                         <div id="solution-3" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4">
+                            <span class="text-3xl bg-green-100 text-green-600 p-3 rounded-full">🌿</span>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800">3. Smart Irrigation & Control</h4>
+                                <p class="text-gray-600 hidden solution-desc">An industrial PLC uses IoT sensor data to automate drip irrigation, delivering water precisely when and where needed.</p>
+                            </div>
+                         </div>
+                         <div id="solution-4" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4">
+                            <span class="text-3xl bg-yellow-100 text-yellow-600 p-3 rounded-full">☀️</span>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800">4. AI Engine & Solar Power</h4>
+                                <p class="text-gray-600 hidden solution-desc">An AI optimizes schedules, powered by a resilient LiFePO₄-based solar system for full off-grid autonomy.</p>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <img src="https://placehold.co/600x450/e2e8f0/333333?text=System+Architecture" alt="System Illustration" id="solution-image" class="w-full h-auto rounded-lg object-cover shadow-md">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Engineering Deep Dive -->
+        <section id="engineering" class="mb-20 md:mb-32 scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Engineering a Best-in-Class System</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   To move from a concept to a commercial product, the system leverages industrial-grade, modular technology. This ensures reliability, scalability, and compliance with the highest standards of modern AgriTech. Explore the core components below.
+                </p>
+            </div>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                <div class="flex justify-center mb-8 border-b">
+                    <button data-tab="purification" class="tech-tab px-6 py-3 font-semibold text-lg active">Water Purification</button>
+                    <button data-tab="iot" class="tech-tab px-6 py-3 font-semibold text-lg">Industrial IoT</button>
+                    <button data-tab="ai" class="tech-tab px-6 py-3 font-semibold text-lg">AI Engine</button>
+                </div>
+                
+                <div id="tab-content-purification">
+                     <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">A tiered offering to match water quality with crop value. Select a technology to see detailed specifications.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- CW Card -->
+                        <div id="cw-card" class="tech-card p-6 border-2 border-green-600 rounded-lg bg-green-50 shadow-md cursor-pointer">
+                            <h4 class="font-bold text-xl mb-2 text-center text-green-800">Tier 1: Constructed Wetland (CW)</h4>
+                            <p class="text-center text-sm text-gray-600">Cost-effective and sustainable for non-food crops.</p>
+                        </div>
+                        <!-- MBR Card -->
+                        <div id="mbr-card" class="tech-card p-6 border rounded-lg bg-gray-50 cursor-pointer">
+                            <h4 class="font-bold text-xl mb-2 text-center">Tier 2: Membrane Bioreactor (MBR)</h4>
+                             <p class="text-center text-sm text-gray-600">Premium quality for high-value food crops.</p>
+                        </div>
+                    </div>
+                    <div id="tech-details" class="mt-8 p-6 bg-gray-100 rounded-lg">
+                        <!-- JS will populate this section -->
+                    </div>
+                </div>
+
+                <div id="tab-content-iot" class="hidden">
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">A robust sensing and control network built for harsh agricultural environments, ensuring reliability and scalability.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                        <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">Soil Health Sensors</h4><p class="text-sm text-gray-600">Multi-depth Moisture, Temperature & EC Probes, NPK sensors.</p></div>
+                        <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">Plant & System Sensors</h4><p class="text-sm text-gray-600">Dendrometers, Infrared Thermometers, Flow & Pressure Meters.</p></div>
+                        <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">LoRaWAN® Connectivity</h4><p class="text-sm text-gray-600">Long-range, low-power network for farm-wide sensor coverage.</p></div>
+                        <div class="p-4 bg-slate-50 rounded-lg border lg:col-span-3"><h4 class="font-bold">Industrial PLC Control</h4><p class="text-sm text-gray-600">Hardened Programmable Logic Controller replaces hobbyist microcontrollers for superior reliability.</p></div>
+                    </div>
+                </div>
+                
+                <div id="tab-content-ai" class="hidden">
+                     <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">The system's intelligence evolves from simple automation to a data-driven digital agronomist.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="p-6 border rounded-lg bg-gray-50">
+                            <h4 class="font-bold text-xl mb-2">Layer 1: Reactive</h4>
+                            <p class="text-gray-600">Automates irrigation based on simple, pre-set sensor thresholds.</p>
+                            <div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">Input: Soil Sensors</div>
+                        </div>
+                         <div class="p-6 border rounded-lg bg-gray-50">
+                            <h4 class="font-bold text-xl mb-2">Layer 2: Predictive</h4>
+                            <p class="text-gray-600">Forecasts crop water needs 24-72 hours in advance using ML models.</p>
+                             <div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">Input: Sensors + Weather APIs</div>
+                        </div>
+                         <div class="p-6 border-2 border-blue-600 rounded-lg bg-blue-50 shadow-md">
+                            <h4 class="font-bold text-xl mb-2 text-blue-800">Layer 3: Prescriptive</h4>
+                            <p class="text-gray-600">Provides actionable advice like "High salinity detected. Recommend flushing cycle."</p>
+                             <div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">Input: Sensors + Weather + Satellite Data</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Real-World Impact -->
+        <section id="impact" class="mb-20 md:mb-32 scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Real-World Impact & Compliance</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   A successful system must comply with regulations and deliver proven benefits. Explore the critical Egyptian water code and results from smart irrigation projects.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- ECP Navigator -->
+                <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                    <h3 class="font-bold text-2xl text-gray-700 mb-2">ECP 501-2015 Compliance Navigator</h3>
+                    <p class="text-gray-600 mb-6">Select a water treatment grade to see which crops are legally permissible to irrigate under Egyptian law.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="A">Grade A</button>
+                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="B">Grade B</button>
+                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="C">Grade C</button>
+                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="D">Grade D</button>
+                    </div>
+                    <div id="ecp-details" class="bg-blue-50 p-6 rounded-lg transition-all duration-300">
+                        <!-- Content updated by JS -->
+                    </div>
+                </div>
+                <!-- Benefits Chart -->
+                <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                     <h3 class="font-bold text-2xl text-gray-700 mb-2">Proven Benefits of Smart Irrigation</h3>
+                     <p class="text-gray-600 mb-6">Case studies from Egypt and around the world demonstrate significant financial and operational gains.</p>
+                    <div class="chart-container h-96">
+                        <canvas id="benefitsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Investment Opportunity -->
+        <section id="investment" class="mb-20 md:mb-32 scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">The Investment Opportunity</h2>
+                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   The platform expands beyond irrigation into a comprehensive farm management system with diversified, recurring revenue streams.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-5xl mb-4">🐞</div>
+                    <h4 class="font-bold text-xl mb-2">Pest & Disease Detection</h4>
+                    <p class="text-gray-600 text-sm">AI-powered computer vision detects crop threats early, enabling precise intervention and reducing losses.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300" style="transition-delay: 150ms;">
+                    <div class="text-5xl mb-4">🧪</div>
+                    <h4 class="font-bold text-xl mb-2">Precision Fertigation</h4>
+                    <p class="text-gray-600 text-sm">NPK sensors and controlled injectors deliver exact nutrients needed, optimizing fertilizer use and cutting costs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300" style="transition-delay: 300ms;">
+                    <div class="text-5xl mb-4">♻️</div>
+                    <h4 class="font-bold text-xl mb-2">Carbon Credit Revenue</h4>
+                    <p class="text-gray-600 text-sm">Solar power and water savings generate tradable carbon credits, creating a new revenue stream for the farm.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 7: Summary -->
+        <section id="summary" class="mb-20 md:mb-32 scroll-mt-20">
+             <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Project Summary: At a Glance</h2>
+                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   A high-level overview of the entire feasibility and investment analysis, from the core problem to the strategic recommendations.
+                </p>
+            </div>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal space-y-8">
+                <div>
+                    <h3 class="font-bold text-xl mb-3 text-amber-600">🟠 Section I: The Urgency of Water Innovation</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Egypt's per capita water is ~610 m³/year, well below the UN's 1,000 m³ water poverty line.</li>
+                        <li>Agriculture consumes up to 85% of water, largely through inefficient methods.</li>
+                        <li>The GERD threatens to reduce Nile flow, potentially impacting 2 million acres of farmland.</li>
+                        <li>Government strategy actively promotes reuse of treated wastewater, creating policy support.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xl mb-3 text-green-600">🟢 Section II & III: The Solution & Tech Enhancements</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Core Concept:</strong> A self-sufficient, solar-powered greywater recycling system with AI-driven irrigation.</li>
+                        <li><strong class="font-semibold">Tech Upgrade:</strong> Move from basic filters to a tiered offering of <strong class="font-semibold">Constructed Wetlands (CW)</strong> for low-grade water and <strong class="font-semibold">Membrane Bioreactors (MBR)</strong> for high-grade, food-safe water.</li>
+                         <li><strong class="font-semibold">IoT Overhaul:</strong> Replace Wi-Fi with <strong class="font-semibold">LoRaWAN®</strong> for long-range connectivity and upgrade sensors to include soil EC (salinity) and NPK (nutrients).</li>
+                         <li><strong class="font-semibold">AI & Power:</strong> Implement a 3-layer AI (Reactive, Predictive, Prescriptive) and engineer the solar system with <strong class="font-semibold">LiFePO₄</strong> batteries for 3-5 days of autonomy.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-xl mb-3 text-purple-600">🟣 Section IV: Regulatory & Practical Deployment</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">ECP 501-2015 is key:</strong> The system must be modular to match treatment grade (A, B, C, D) with the legally permitted crop type.</li>
+                        <li><strong class="font-semibold">Proven Results:</strong> Case studies (Madinaty, Delta Agrar) show smart irrigation saves 17-50% of water and up to 75% of labor.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-xl mb-3" style="color: #6d4c41;">🟤 Section V: Investment & Business Strategy</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                         <li><strong class="font-semibold">Feature Expansion:</strong> Add high-value services like AI-driven pest detection and precision fertigation.</li>
+                         <li><strong class="font-semibold">New Revenue:</strong> Monetize sustainability by generating and selling certified carbon credits (e.g., via Gold Standard or Verra).</li>
+                         <li><strong class="font-semibold">Business Model:</strong> Shift from high-CAPEX sales to a subscription-based <strong class="font-semibold">"AgriTech-as-a-Service"</strong> model for predictable, scalable revenue.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-xl mb-3 text-red-600">✅ Section VI: Roadmap & Conclusion</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                         <li><strong class="font-semibold">Phase 1 (Pilot):</strong> Validate MVP with a partner farm in a water-stressed region like Beni Suef.</li>
+                         <li><strong class="font-semibold">Phase 2 (Commercialize):</strong> Launch modular CW/MBR systems and begin carbon credit certification.</li>
+                         <li><strong class="font-semibold">Phase 3 (Scale):</strong> Expand nationwide, roll out premium AI features, and transition fully to a service model.</li>
+                         <li><strong class="font-semibold">Conclusion:</strong> The project is vital and feasible, offering a path to profitable, climate-resilient agriculture for Egypt.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Roadmap -->
+        <section id="roadmap" class="scroll-mt-20">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">Strategic Roadmap to Success</h2>
+                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
+                   A phased approach ensures disciplined growth, from initial validation to full-scale market leadership. Click each phase to see details.
+                </p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-4 reveal">
+                <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                    <div class="roadmap-header p-6 cursor-pointer flex justify-between items-center">
+                        <h4 class="font-bold text-xl text-blue-700">Phase 1: Pilot & Validation (Year 1)</h4>
+                        <span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">›</span>
+                    </div>
+                    <div class="roadmap-content px-6 text-gray-600">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Develop Minimum Viable Product (MVP) with core filtration and automation.</li>
+                            <li>Partner with a local nursery to establish a real-world testbed.</li>
+                            <li>Validate effluent quality against ECP 501-2015 Grades C & D.</li>
+                            <li>Collect and quantify baseline ROI data (water, energy, labor savings).</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                    <div class="roadmap-header p-6 cursor-pointer flex justify-between items-center">
+                        <h4 class="font-bold text-xl text-blue-700">Phase 2: Commercialize (Year 2)</h4>
+                        <span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">›</span>
+                    </div>
+                    <div class="roadmap-content px-6 text-gray-600">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Engineer modular product line: Basic (CW) and Pro (MBR) systems.</li>
+                            <li>Build professional, secure, and scalable mobile app and cloud backend.</li>
+                            <li>Target early-adopter commercial farms with strong ROI case studies.</li>
+                            <li>Engage carbon project developer to formalize credit generation program.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                    <div class="roadmap-header p-6 cursor-pointer flex justify-between items-center">
+                        <h4 class="font-bold text-xl text-blue-700">Phase 3: Scale-Up & Expansion (Year 3+)</h4>
+                        <span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">›</span>
+                    </div>
+                    <div class="roadmap-content px-6 text-gray-600">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Launch premium features: Pest Detection and Precision Fertigation modules.</li>
+                            <li>Transition business model to "Precision-Ag-as-a-Service" (PaaS) subscription.</li>
+                            <li>Begin issuance and sale of verified carbon credits.</li>
+                            <li>Aggressively scale sales and marketing across all target agricultural sectors in Egypt.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-24">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 Agri-Tech Vision. An interactive analysis of a sustainable future for Egyptian agriculture.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Navigation scroll highlighting
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.4 };
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            const href = link.getAttribute('href');
+                            if (href === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            sections.forEach(section => { navObserver.observe(section); });
+
+            // Scroll Reveal Animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => { revealObserver.observe(el); });
+            
+            // Animate numbers
+            const animateValue = (obj, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString() + obj.dataset.unit;
+                    if (progress < 1) window.requestAnimationFrame(step);
+                };
+                window.requestAnimationFrame(step);
+            };
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const targetVal = parseInt(el.dataset.value);
+                        animateValue(el, 0, targetVal, 1500);
+                        statsObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.getElementById('water-per-capita').dataset.value = '610';
+            document.getElementById('water-per-capita').dataset.unit = ' m³';
+            document.getElementById('agri-water-usage').dataset.value = '80';
+            document.getElementById('agri-water-usage').dataset.unit = '%';
+            document.getElementById('food-imports').dataset.value = '55';
+            document.getElementById('food-imports').dataset.unit = '%';
+            
+            statsObserver.observe(document.getElementById('water-per-capita'));
+            statsObserver.observe(document.getElementById('agri-water-usage'));
+            statsObserver.observe(document.getElementById('food-imports'));
+
+            // Chart.js: Water Crisis Chart
+            const waterCrisisCtx = document.getElementById('waterCrisisChart').getContext('2d');
+            new Chart(waterCrisisCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1990', '2000', '2010', '2020', '2025 (Proj.)'],
+                    datasets: [{
+                        label: 'Per Capita Water Availability (m³)',
+                        data: [1600, 1100, 800, 610, 500],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: false, title: { display: true, text: 'Cubic Meters (m³)' } } },
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+            
+            // Solution Section Interaction
+            const solutionCards = document.querySelectorAll('.solution-card');
+            const solutionImage = document.getElementById('solution-image');
+            const solutionImages = {
+                'solution-1': 'https://placehold.co/600x450/bee3f8/2c5282?text=Collection',
+                'solution-2': 'https://placehold.co/600x450/d6bcfa/44337a?text=Purification',
+                'solution-3': 'https://placehold.co/600x450/a7f3d0/047857?text=Smart+Control',
+                'solution-4': 'https://placehold.co/600x450/fef08a/854d0e?text=AI+and+Power',
+            };
+
+            solutionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    solutionCards.forEach(c => {
+                        c.classList.remove('border-blue-500', 'bg-white', 'shadow-lg');
+                        c.querySelector('.solution-desc').classList.add('hidden');
+                    });
+                    card.classList.add('border-blue-500', 'bg-white', 'shadow-lg');
+                    card.querySelector('.solution-desc').classList.remove('hidden');
+                    solutionImage.src = solutionImages[card.id];
+                });
+            });
+            solutionCards[0].click();
+
+            // Engineering Tabs
+            const techTabs = document.querySelectorAll('.tech-tab');
+            const techTabContents = {
+                purification: document.getElementById('tab-content-purification'),
+                iot: document.getElementById('tab-content-iot'),
+                ai: document.getElementById('tab-content-ai')
+            };
+            techTabs.forEach(button => {
+                button.addEventListener('click', () => {
+                    techTabs.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    Object.values(techTabContents).forEach(content => content.classList.add('hidden'));
+                    techTabContents[button.dataset.tab].classList.remove('hidden');
+                });
+            });
+
+            // Engineering - Purification Tech Details
+            const cwCard = document.getElementById('cw-card');
+            const mbrCard = document.getElementById('mbr-card');
+            const techDetails = document.getElementById('tech-details');
+            const techData = {
+                cw: `
+                    <h5 class="font-bold text-lg text-green-800 mb-3">Constructed Wetland (CW) Details</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><strong>ECP Grade:</strong> C, D</li>
+                        <li><strong>Pathogen Removal:</strong> 1-2 log (Low-Moderate)</li>
+                        <li><strong>Land Footprint:</strong> Large (3-5 m²/PE)</li>
+                        <li><strong>Capital/Operational Cost:</strong> Low-Medium / Very Low</li>
+                        <li><strong>Energy Use:</strong> Very Low</li>
+                        <li><strong>Ideal For:</strong> Non-food crops, Timber, Forage</li>
+                    </ul>`,
+                mbr: `
+                    <h5 class="font-bold text-lg text-gray-800 mb-3">Membrane Bioreactor (MBR) Details</h5>
+                     <ul class="space-y-2 text-sm">
+                        <li><strong>ECP Grade:</strong> A, B, C</li>
+                        <li><strong>Pathogen Removal:</strong> >4-6 log (Very High)</li>
+                        <li><strong>Land Footprint:</strong> Very Small (<0.5 m²/PE)</li>
+                        <li><strong>Capital/Operational Cost:</strong> High / Medium-High</li>
+                        <li><strong>Energy Use:</strong> High</li>
+                        <li><strong>Ideal For:</strong> Fruits, Cooked Vegetables, Nurseries</li>
+                    </ul>`
+            };
+            cwCard.addEventListener('click', () => {
+                techDetails.innerHTML = techData.cw;
+                cwCard.classList.add('border-green-600', 'bg-green-50', 'shadow-md');
+                mbrCard.classList.remove('border-blue-600', 'bg-blue-50', 'shadow-md');
+            });
+            mbrCard.addEventListener('click', () => {
+                techDetails.innerHTML = techData.mbr;
+                mbrCard.classList.add('border-blue-600', 'bg-blue-50', 'shadow-md');
+                cwCard.classList.remove('border-green-600', 'bg-green-50', 'shadow-md');
+            });
+            cwCard.click();
+
+            
+            // ECP Navigator Interaction
+            const ecpButtons = document.querySelectorAll('.ecp-button');
+            const ecpDetails = document.getElementById('ecp-details');
+            const ecpData = {
+                'A': { title: 'Grade A: Highest Quality', params: 'TSS: <15 mg/L, Turbidity: <5 NTU', crops: 'Public parks, landscapes, and fruits eaten fresh without a peel (e.g., apples, grapes, peaches).' },
+                'B': { title: 'Grade B: High Quality', params: 'TSS: <30 mg/L, Fecal Coliforms: <1000 CFU/100mL', crops: 'Dry grains (wheat, corn), cooked vegetables, and fruits with peels (e.g., citrus, olives, mangoes, palms).' },
+                'C': { title: 'Grade C: Medium Quality', params: 'TSS: <50 mg/L', crops: 'Forage crops for animals, ornamental plants for nurseries, and non-food seeds.' },
+                'D': { title: 'Grade D: Industrial Quality', params: 'TSS: <300 mg/L', crops: 'Crops for biomass/biofuel (jatropha), cellulose production, and timber trees (camphor, mahogany).' }
+            };
+            const updateEcpDetails = (grade) => {
+                const data = ecpData[grade];
+                ecpDetails.innerHTML = `<h4 class="font-bold text-xl text-blue-800 mb-2">${data.title}</h4><p class="text-sm font-mono text-blue-600 mb-3">${data.params}</p><p class="text-gray-700">${data.crops}</p>`;
+            }
+            ecpButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    ecpButtons.forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
+                    button.classList.add('active', 'bg-blue-600', 'text-white');
+                    updateEcpDetails(button.dataset.grade);
+                });
+            });
+            ecpButtons[0].click();
+
+            // Chart.js: Benefits Chart
+            const benefitsCtx = document.getElementById('benefitsChart').getContext('2d');
+            new Chart(benefitsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Madinaty, Egypt', 'Delta Agrar, Serbia', 'Indonesian Study', 'Washington, USA'],
+                    datasets: [
+                        { label: 'Water Savings (%)', data: [50, 17, 47.8, 52], backgroundColor: '#60a5fa' },
+                        { label: 'Yield Increase (%)', data: [0, 0, 34.9, 0], backgroundColor: '#34d399' },
+                        { label: 'Labor/Cost Savings (%)', data: [0, 75, 50, 22], backgroundColor: '#fbbf24' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Percentage (%)' } },
+                        x: { ticks: { autoSkip: false, maxRotation: 0, minRotation: 0,
+                            callback: function(value) { const label = this.getLabelForValue(value); return /\s/.test(label) ? label.split(" ") : label; }
+                        }}
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                footer: function(tooltipItems) {
+                                    let study = tooltipItems[0].label;
+                                    let notes = { 'Madinaty, Egypt': 'Focus on urban green space.', 'Delta Agrar, Serbia': 'Reduced field visits by 4x.', 'Indonesian Study': 'Improved benefit-cost ratio.', 'Washington, USA': '22% higher profits recorded.' };
+                                    return notes[study] || '';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Roadmap Accordion Interaction
+            document.querySelectorAll('.roadmap-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const item = header.parentElement;
+                    item.classList.toggle('active');
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
