@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth">
+<html lang="en" dir="ltr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقرير تفاعلي: نظام ذكي لإعادة تدوير المياه الرمادية</title>
+    <title>Bilingual Interactive Report: Smart Agriculture System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Earthen Tech -->
     <!-- Application Structure Plan: The SPA is structured as a top-to-bottom investment narrative. The reordered flow guides the user from the macro problem to the micro solution, builds credibility with tech and data, presents the opportunity and risks, outlines the execution plan (Roadmap), and concludes with a powerful Summary and a list of References. This makes the proposal more digestible, persuasive, and credible. -->
     <!-- Visualization & Content Choices: 
@@ -25,10 +25,19 @@
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        :root {
+            --font-en: 'Inter', sans-serif;
+            --font-ar: 'Cairo', sans-serif;
+        }
         body {
-            font-family: 'Cairo', sans-serif;
             background-color: #f8f9fa;
             color: #343a40;
+        }
+        [lang="en"] body, [lang="en"] button, [lang="en"] input, [lang="en"] select, [lang="en"] textarea {
+            font-family: var(--font-en);
+        }
+        [lang="ar"] body, [lang="ar"] button, [lang="ar"] input, [lang="ar"] select, [lang="ar"] textarea {
+            font-family: var(--font-ar);
         }
         .chart-container {
             position: relative;
@@ -68,6 +77,9 @@
         .roadmap-item.active .roadmap-arrow {
             transform: rotate(-90deg);
         }
+        [dir="ltr"] .roadmap-item.active .roadmap-arrow {
+            transform: rotate(90deg);
+        }
         .roadmap-arrow {
             transition: transform 0.3s;
         }
@@ -96,23 +108,24 @@
     <!-- Header & Navigation -->
     <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+            <div id="logo-container" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <span class="text-3xl" style="color: #277055;">🌿</span>
                 <div>
-                    <h1 class="text-lg font-bold text-gray-800 leading-tight">الزراعة الذكية</h1>
-                    <p class="text-xs text-gray-500 leading-tight">إعادة تدوير المياه الرمادية بالذكاء الاصطناعي</p>
+                    <h1 id="logo-title" class="text-lg font-bold text-gray-800 leading-tight">Smart Agriculture</h1>
+                    <p id="logo-subtitle" class="text-xs text-gray-500 leading-tight">AI-Powered Greywater Recycling</p>
                 </div>
             </div>
-            <div class="hidden md:flex space-x-3 lg:space-x-4 text-xs lg:text-sm rtl:space-x-reverse">
-                <a href="#challenge" class="nav-link pb-1">التحدي</a>
-                <a href="#solution" class="nav-link pb-1">الحل</a>
-                <a href="#engineering" class="nav-link pb-1">الهندسة</a>
-                <a href="#impact" class="nav-link pb-1">الأثر</a>
-                <a href="#investment" class="nav-link pb-1">الفرصة</a>
-                <a href="#analysis" class="nav-link pb-1">التحليل</a>
-                <a href="#roadmap" class="nav-link pb-1">خارطة الطريق</a>
-                <a href="#summary" class="nav-link pb-1">الملخص</a>
-                <a href="#references" class="nav-link pb-1">المراجع</a>
+            <div class="hidden md:flex items-center space-x-3 lg:space-x-4 text-xs lg:text-sm rtl:space-x-reverse">
+                <a href="#challenge" id="nav-challenge" class="nav-link pb-1">The Challenge</a>
+                <a href="#solution" id="nav-solution" class="nav-link pb-1">The Solution</a>
+                <a href="#engineering" id="nav-engineering" class="nav-link pb-1">Engineering</a>
+                <a href="#impact" id="nav-impact" class="nav-link pb-1">Impact</a>
+                <a href="#investment" id="nav-investment" class="nav-link pb-1">Opportunity</a>
+                <a href="#analysis" id="nav-analysis" class="nav-link pb-1">Analysis</a>
+                <a href="#roadmap" id="nav-roadmap" class="nav-link pb-1">Roadmap</a>
+                <a href="#summary" id="nav-summary" class="nav-link pb-1">Summary</a>
+                <a href="#references" id="nav-references" class="nav-link pb-1">References</a>
+                <button id="lang-switcher" class="px-3 py-1 text-sm font-semibold rounded-md border border-gray-400 text-gray-600 hover:bg-gray-100">العربية</button>
             </div>
              <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500">
                 <div class="w-6 h-0.5 bg-gray-700 mb-1"></div>
@@ -121,439 +134,467 @@
             </button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 border-t">
-            <a href="#challenge" class="block py-2 nav-link text-right">التحدي</a>
-            <a href="#solution" class="block py-2 nav-link text-right">الحل</a>
-            <a href="#engineering" class="block py-2 nav-link text-right">الهندسة</a>
-            <a href="#impact" class="block py-2 nav-link text-right">الأثر</a>
-            <a href="#investment" class="block py-2 nav-link text-right">الفرصة</a>
-            <a href="#analysis" class="block py-2 nav-link text-right">التحليل</a>
-            <a href="#roadmap" class="block py-2 nav-link text-right">خارطة الطريق</a>
-            <a href="#summary" class="block py-2 nav-link text-right">الملخص</a>
-            <a href="#references" class="block py-2 nav-link text-right">المراجع</a>
+            <a href="#challenge" id="mobile-nav-challenge" class="block py-2 nav-link">The Challenge</a>
+            <a href="#solution" id="mobile-nav-solution" class="block py-2 nav-link">The Solution</a>
+            <a href="#engineering" id="mobile-nav-engineering" class="block py-2 nav-link">Engineering</a>
+            <a href="#impact" id="mobile-nav-impact" class="block py-2 nav-link">Impact</a>
+            <a href="#investment" id="mobile-nav-investment" class="block py-2 nav-link">Opportunity</a>
+            <a href="#analysis" id="mobile-nav-analysis" class="block py-2 nav-link">Analysis</a>
+            <a href="#roadmap" id="mobile-nav-roadmap" class="block py-2 nav-link">Roadmap</a>
+            <a href="#summary" id="mobile-nav-summary" class="block py-2 nav-link">Summary</a>
+            <a href="#references" id="mobile-nav-references" class="block py-2 nav-link">References</a>
+            <button id="mobile-lang-switcher" class="mt-2 w-full px-3 py-2 text-sm font-semibold rounded-md border border-gray-400 text-gray-600 hover:bg-gray-100">العربية</button>
         </div>
     </header>
 
     <main class="container mx-auto px-6 py-8 md:py-12">
 
-        <!-- Section 1: The Challenge -->
-        <section id="challenge" class="text-center mb-20 md:mb-32 scroll-mt-20">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 reveal">أزمة المياه في مصر: ضرورة زراعية ملحة</h1>
-            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                تواجه مصر تحديًا حرجًا في ندرة المياه يهدد أمنها الغذائي واستقرارها الاقتصادي. وبما أن القطاع الزراعي، الذي يمثل شريان الحياة للأمة، هو أكبر مستهلك للمياه، فإن الابتكار في مجال الري لم يعد مجرد فرصة، بل ضرورة حتمية للبقاء.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal">
-                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="water-per-capita">610 م³</h3>
-                    <p class="text-gray-700 font-medium">نصيب الفرد من المياه</p>
-                    <p class="text-sm text-gray-500 mt-2">أقل من خط فقر الماء للأمم المتحدة</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal" style="transition-delay: 150ms;">
-                    <h3 class="text-4xl font-bold text-green-700 mb-2" id="agri-water-usage">~80%</h3>
-                    <p class="text-gray-700 font-medium">استهلاك المياه في الزراعة</p>
-                     <p class="text-sm text-gray-500 mt-2">بسبب أساليب الري التقليدية</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal" style="transition-delay: 300ms;">
-                    <h3 class="text-4xl font-bold text-red-600 mb-2" id="food-imports">~55%</h3>
-                    <p class="text-gray-700 font-medium">الاعتماد على استيراد الغذاء</p>
-                    <p class="text-sm text-gray-500 mt-2">يزداد مع تناقص الموارد المائية</p>
-                </div>
-            </div>
-             <div class="bg-white p-4 md:p-8 rounded-xl border border-gray-200 shadow-lg reveal">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4">الانخفاض المتوقع في توافر المياه</h3>
-                 <div class="chart-container max-w-4xl h-80">
-                    <canvas id="waterCrisisChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: The Solution -->
-        <section id="solution" class="mb-20 md:mb-32 scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">النظام المتكامل: حل مغلق ومستدام</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   يقدم هذا المشروع نظامًا ذكيًا ومكتفيًا ذاتيًا يعيد تدوير المياه الرمادية لاستخدامها في الزراعة. يجمع النظام بين تنقية المياه والطاقة الشمسية والأتمتة القائمة على الذكاء الاصطناعي في منظومة واحدة متكاملة. انقر على كل مكون لاستكشاف دوره في تحقيق زراعة مستدامة.
-                </p>
-            </div>
-            <div class="w-full bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div class="order-2 lg:order-1 space-y-4">
-                        <div id="solution-1" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse">
-                           <span class="text-3xl bg-blue-100 text-blue-600 p-3 rounded-full">💧</span>
-                           <div>
-                               <h4 class="text-xl font-bold text-gray-800">١. تجميع المياه الرمادية</h4>
-                               <p class="text-gray-600 hidden solution-desc">يجمع مياه الصرف من الأحواض والاستحمام لإنشاء مصدر مياه مستمر داخل الموقع.</p>
-                           </div>
-                        </div>
-                        <div id="solution-2" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse">
-                           <span class="text-3xl bg-purple-100 text-purple-600 p-3 rounded-full">🔬</span>
-                           <div>
-                                <h4 class="text-xl font-bold text-gray-800">٢. فلترة متعددة المراحل</h4>
-                                <p class="text-gray-600 hidden solution-desc">تنقية المياه عبر نظام وحدات (مثل الأراضي الرطبة أو المفاعلات الحيوية) لتلبية معايير الجودة الزراعية.</p>
-                           </div>
-                        </div>
-                         <div id="solution-3" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse">
-                            <span class="text-3xl bg-green-100 text-green-600 p-3 rounded-full">🌿</span>
-                            <div>
-                                <h4 class="text-xl font-bold text-gray-800">٣. الري والتحكم الذكي</h4>
-                                <p class="text-gray-600 hidden solution-desc">تستخدم وحدة تحكم صناعية (PLC) بيانات إنترنت الأشياء لأتمتة الري بالتنقيط بدقة.</p>
-                            </div>
-                         </div>
-                         <div id="solution-4" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse">
-                            <span class="text-3xl bg-yellow-100 text-yellow-600 p-3 rounded-full">☀️</span>
-                            <div>
-                                <h4 class="text-xl font-bold text-gray-800">٤. الذكاء الاصطناعي والطاقة الشمسية</h4>
-                                <p class="text-gray-600 hidden solution-desc">يعمل الذكاء الاصطناعي على تحسين الجدولة، مدعومًا بنظام طاقة شمسية مستقل تمامًا.</p>
-                            </div>
-                         </div>
-                    </div>
-                    <div class="order-1 lg:order-2">
-                        <img src="https://placehold.co/600x450/e2e8f0/333333?text=بنية+النظام" alt="System Illustration" id="solution-image" class="w-full h-auto rounded-lg object-cover shadow-md">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Engineering Deep Dive -->
-        <section id="engineering" class="mb-20 md:mb-32 scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">هندسة نظام هو الأفضل في فئته</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   للانتقال من مجرد مفهوم إلى منتج تجاري، يعتمد النظام على تقنيات معيارية من الدرجة الصناعية. هذا يضمن الموثوقية والقابلية للتوسع والامتثال لأعلى معايير التكنولوجيا الزراعية الحديثة. استكشف المكونات الأساسية أدناه.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
-                <div class="flex justify-center mb-8 border-b">
-                    <button data-tab="purification" class="tech-tab px-6 py-3 font-semibold text-lg active">تنقية المياه</button>
-                    <button data-tab="iot" class="tech-tab px-6 py-3 font-semibold text-lg">إنترنت الأشياء الصناعي</button>
-                    <button data-tab="ai" class="tech-tab px-6 py-3 font-semibold text-lg">محرك الذكاء الاصطناعي</button>
-                </div>
-                
-                <div id="tab-content-purification">
-                     <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">نظام معياري لمطابقة جودة المياه مع قيمة المحصول. حدد تقنية لعرض المواصفات التفصيلية.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- CW Card -->
-                        <div id="cw-card" class="tech-card p-6 border-2 border-green-600 rounded-lg bg-green-50 shadow-md cursor-pointer">
-                            <h4 class="font-bold text-xl mb-2 text-center text-green-800">المستوى ١: الأراضي الرطبة المُنشأة (CW)</h4>
-                            <p class="text-center text-sm text-gray-600">فعالة من حيث التكلفة ومستدامة للمحاصيل غير الغذائية.</p>
-                        </div>
-                        <!-- MBR Card -->
-                        <div id="mbr-card" class="tech-card p-6 border rounded-lg bg-gray-50 cursor-pointer">
-                            <h4 class="font-bold text-xl mb-2 text-center">المستوى ٢: المفاعل الحيوي الغشائي (MBR)</h4>
-                             <p class="text-center text-sm text-gray-600">جودة فائقة للمحاصيل الغذائية عالية القيمة.</p>
-                        </div>
-                    </div>
-                    <div id="tech-details" class="mt-8 p-6 bg-gray-100 rounded-lg text-right">
-                        <!-- JS will populate this section -->
-                    </div>
-                </div>
-
-                <div id="tab-content-iot" class="hidden">
-                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">شبكة استشعار وتحكم قوية مصممة للبيئات الزراعية القاسية، مما يضمن الموثوقية والقابلية للتطوير.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
-                        <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">مستشعرات صحة التربة</h4><p class="text-sm text-gray-600">مجّسات رطوبة وحرارة وملوحة (EC) متعددة الأعماق، ومستشعرات NPK.</p></div>
-                        <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">مستشعرات النبات والنظام</h4><p class="text-sm text-gray-600">أجهزة قياس نمو الساق، ومقاييس حرارة بالأشعة تحت الحمراء، وعدادات تدفق وضغط.</p></div>
-                        <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">اتصال LoRaWAN®</h4><p class="text-sm text-gray-600">شبكة بعيدة المدى ومنخفضة الطاقة لتغطية المستشعرات على مستوى المزرعة.</p></div>
-                        <div class="p-4 bg-slate-50 rounded-lg border lg:col-span-3"><h4 class="font-bold">تحكم PLC صناعي</h4><p class="text-sm text-gray-600">وحدة تحكم منطقية قابلة للبرمجة (PLC) قوية لتحل محل وحدات التحكم المصغرة للهواة لموثوقية فائقة.</p></div>
-                    </div>
-                </div>
-                
-                <div id="tab-content-ai" class="hidden">
-                     <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">يتطور ذكاء النظام من الأتمتة البسيطة إلى مستشار زراعي رقمي يعتمد على البيانات.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                        <div class="p-6 border rounded-lg bg-gray-50">
-                            <h4 class="font-bold text-xl mb-2">المستوى ١: تفاعلي</h4>
-                            <p class="text-gray-600">أتمتة الري بناءً على عتبات استشعار بسيطة ومحددة مسبقًا.</p>
-                            <div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">المدخلات: مستشعرات التربة</div>
-                        </div>
-                         <div class="p-6 border rounded-lg bg-gray-50">
-                            <h4 class="font-bold text-xl mb-2">المستوى ٢: تنبؤي</h4>
-                            <p class="text-gray-600">يتنبأ باحتياجات المحاصيل المائية قبل 24-72 ساعة باستخدام نماذج تعلم الآلة.</p>
-                             <div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">المدخلات: مستشعرات + بيانات الطقس</div>
-                        </div>
-                         <div class="p-6 border-2 border-blue-600 rounded-lg bg-blue-50 shadow-md">
-                            <h4 class="font-bold text-xl mb-2 text-blue-800">المستوى ٣: توجيهي</h4>
-                            <p class="text-gray-600">يقدم نصائح قابلة للتنفيذ مثل: "ملوحة عالية، يوصى بدورة غسيل".</p>
-                             <div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">المدخلات: مستشعرات + طقس + صور أقمار صناعية</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Real-World Impact -->
-        <section id="impact" class="mb-20 md:mb-32 scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">الأثر الواقعي والامتثال التنظيمي</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   يجب على النظام الناجح أن يمتثل للوائح وأن يقدم فوائد مثبتة. استكشف كود المياه المصري الحاسم ونتائج مشاريع الري الذكية الواقعية.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- ECP Navigator -->
-                <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
-                    <h3 class="font-bold text-2xl text-gray-700 mb-2">مستكشف الامتثال للكود المصري ECP 501-2015</h3>
-                    <p class="text-gray-600 mb-6">حدد درجة معالجة المياه لمعرفة المحاصيل المسموح بريها قانونًا بموجب القانون المصري.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="A">الدرجة أ</button>
-                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="B">الدرجة ب</button>
-                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="C">الدرجة ج</button>
-                        <button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="D">الدرجة د</button>
-                    </div>
-                    <div id="ecp-details" class="bg-blue-50 p-6 rounded-lg transition-all duration-300 text-right">
-                        <!-- Content updated by JS -->
-                    </div>
-                </div>
-                <!-- Benefits Chart -->
-                <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
-                     <h3 class="font-bold text-2xl text-gray-700 mb-2">الفوائد المثبتة للري الذكي</h3>
-                     <p class="text-gray-600 mb-6">توضح دراسات الحالة من مصر وحول العالم مكاسب مالية وتشغيلية كبيرة.</p>
-                    <div class="chart-container h-96">
-                        <canvas id="benefitsChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: Investment Opportunity -->
-        <section id="investment" class="mb-20 md:mb-32 scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">الفرصة الاستثمارية</h2>
-                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   تتوسع المنصة إلى ما هو أبعد من الري لتصبح نظامًا شاملاً لإدارة المزارع مع مصادر إيرادات متنوعة ومتكررة.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300">
-                    <div class="text-5xl mb-4">🐞</div>
-                    <h4 class="font-bold text-xl mb-2">كشف الآفات والأمراض</h4>
-                    <p class="text-gray-600 text-sm">يكتشف الذكاء الاصطناعي تهديدات المحاصيل مبكرًا، مما يتيح التدخل الدقيق ويقلل الخسائر.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300" style="transition-delay: 150ms;">
-                    <div class="text-5xl mb-4">🧪</div>
-                    <h4 class="font-bold text-xl mb-2">التسميد الدقيق</h4>
-                    <p class="text-gray-600 text-sm">توفر مستشعرات NPK والحاقنات المتحكم بها العناصر الغذائية بدقة، مما يقلل من هدر الأسمدة.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300" style="transition-delay: 300ms;">
-                    <div class="text-5xl mb-4">♻️</div>
-                    <h4 class="font-bold text-xl mb-2">إيرادات أرصدة الكربون</h4>
-                    <p class="text-gray-600 text-sm">يولد توفير الطاقة والمياه أرصدة كربون قابلة للتداول، مما يخلق مصدر دخل جديد للمزرعة.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 6: Critical Analysis -->
-        <section id="analysis" class="mb-20 md:mb-32 scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">التحليل النقدي: SWOT والاستراتيجية</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                    تحليل متوازن لنقاط قوة المشروع وضعفه وفرصه وتهديداته، إلى جانب استراتيجيات واضحة لتخفيف المخاطر والاستفادة من المزايا.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <div>
-                        <h3 class="text-2xl font-bold text-green-600 mb-4">نقاط القوة (المزايا التنافسية)</h3>
-                        <ul class="space-y-4 text-right">
-                            <li><strong class="font-semibold block">١. حل أزمة وطنية حرجة:</strong> يعالج ندرة المياه الحادة في مصر وهدرها في الزراعة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: الشراكة مع وزارة الموارد المائية والري؛ استهداف المناطق المجهدة مائيًا مثل الفيوم.</em></li>
-                            <li><strong class="font-semibold block">٢. توافق تنظيمي قوي:</strong> يتماشى مع الكود المصري ECP 501-2015 الذي يشجع على إعادة استخدام مياه الصرف الصحي المعالجة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: تصميم وحدات فلترة معيارية (CW مقابل MBR) والحصول على شهادة رسمية.</em></li>
-                            <li><strong class="font-semibold block">٣. تقنية مُجرّبة:</strong> أثبت الري الذكي القائم على إنترنت الأشياء توفيرًا للمياه بنسبة تصل إلى 50٪ في دراسات حالة محلية. <em class="block text-sm text-gray-500 mt-1">التنفيذ: استخدام أجهزة استشعار موثوقة ومتاحة تجارياً والبدء بأساليب فلترة مُجرّبة.</em></li>
-                            <li><strong class="font-semibold block">٤. مصادر إيرادات متعددة:</strong> أكثر استدامة من بيع الأجهزة لمرة واحدة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: تطبيق نموذج اشتراك وبيع أرصدة الكربون عبر معيار Gold Standard.</em></li>
-                             <li><strong class="font-semibold block">٥. قابلية التوسع والنمذجة:</strong> قابل للتكيف مع المزارع الصغيرة والشركات الزراعية الكبيرة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: تقديم نسخة "أساسية" منخفضة التكلفة (CW) ونسخة "احترافية" عالية المواصفات (MBR).</em></li>
-                        </ul>
-                    </div>
-                     <div>
-                        <h3 class="text-2xl font-bold text-red-600 mb-4">نقاط الضعف (المخاطر والتحديات)</h3>
-                        <ul class="space-y-4 text-right">
-                            <li><strong class="font-semibold block">١. تكاليف أولية مرتفعة:</strong> يمكن أن تكون أنظمة MBR باهظة الثمن للمزارعين. <em class="block text-sm text-gray-500 mt-1">الحل: البدء بمشاريع تجريبية منخفضة التكلفة والبحث عن منح حكومية أو استثمارات مؤثرة.</em></li>
-                            <li><strong class="font-semibold block">٢. مقاومة المزارعين للتقنية الجديدة:</strong> قد يتردد المزارعون التقليديون في تبني الأتمتة. <em class="block text-sm text-gray-500 mt-1">الحل: تقديم تجارب تجريبية مجانية لإثبات عائد الاستثمار وبرامج تدريبية.</em></li>
-                            <li><strong class="font-semibold block">٣. مشكلات الصيانة والانسداد:</strong> تتطلب الفلاتر والأغشية صيانة دورية. <em class="block text-sm text-gray-500 mt-1">الحل: تنبيهات آلية للتنظيف؛ تضمين الصيانة في نموذج الاشتراك.</em></li>
-                            <li><strong class="font-semibold block">٤. الاعتماد على الطاقة الشمسية:</strong> يمكن أن يقلل الغبار من كفاءة الألواح. <em class="block text-sm text-gray-500 mt-1">الحل: استخدام ألواح ذات طلاء ذاتي التنظيف وبطارية احتياطية قوية (LiFePO₄) لمدة 3-5 أيام.</em></li>
-                            <li><strong class="font-semibold block">٥. محدودية بيانات الذكاء الاصطناعي في البداية:</strong> تحتاج النماذج التنبؤية إلى بيانات تاريخية. <em class="block text-sm text-gray-500 mt-1">الحل: البدء بري قائم على القواعد ثم دمج واجهات برمجة تطبيقات الطقس وبيانات الأقمار الصناعية تدريجياً.</em></li>
-                        </ul>
-                    </div>
-                </div>
-                 <div class="mt-12 pt-8 border-t">
-                     <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">استراتيجية التنفيذ وملخص SWOT</h3>
-                     <div class="overflow-x-auto">
-                        <table class="w-full text-right">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="p-3 font-semibold">الفئة</th>
-                                    <th class="p-3 font-semibold">العامل</th>
-                                    <th class="p-3 font-semibold">استراتيجية التخفيف / الاستفادة</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b"><td class="p-3 text-green-600 font-bold">قوة</td><td class="p-3">يحل أزمة مياه</td><td class="p-3">الشراكة مع الحكومة (MWRI) والتوافق مع الاستراتيجية الوطنية للمياه 2017-2037.</td></tr>
-                                <tr class="border-b"><td class="p-3 text-green-600 font-bold">قوة</td><td class="p-3">مصادر إيرادات متعددة</td><td class="p-3">التركيز على نموذج الاشتراك ("AgriTech-as-a-Service") بالإضافة إلى مبيعات أرصدة الكربون.</td></tr>
-                                <tr class="border-b"><td class="p-3 text-red-600 font-bold">ضعف</td><td class="p-3">تكاليف أولية مرتفعة</td><td class="p-3">البدء بأنظمة CW منخفضة التكلفة للمرحلة التجريبية؛ استخدام نموذج الاشتراك لتقليل حاجز الدخول.</td></tr>
-                                <tr class="border-b"><td class="p-3 text-red-600 font-bold">ضعف</td><td class="p-3">مقاومة المزارعين للتقنية</td><td class="p-3">إجراء برامج تجريبية مجانية وعملية مع التعاونيات الزراعية المحلية لبناء الثقة وإظهار عائد الاستثمار.</td></tr>
-                                <tr class="border-b"><td class="p-3 text-blue-600 font-bold">فرصة</td><td class="p-3">سوق أرصدة الكربون</td><td class="p-3">التعامل مع مطور مشاريع في وقت مبكر لاعتماد النظام عبر Gold Standard أو Verra للحصول على أرصدة عالية الجودة.</td></tr>
-                                <tr class="border-b"><td class="p-3 text-orange-600 font-bold">تهديد</td><td class="p-3">المنافسة</td><td class="p-3">التركيز على الاحتياجات المحلية الفائقة (الامتثال لـ ECP 501-2015) وبناء نموذج خدمة متكامل ومتفوق.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                 </div>
-            </div>
-        </section>
-
-        <!-- Section 7: Roadmap -->
-        <section id="roadmap" class="mb-20 md:mb-32 scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">خارطة الطريق الاستراتيجية للنجاح</h2>
-                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   يضمن النهج المرحلي نموًا منضبطًا، بدءًا من التحقق الأولي وحتى الريادة الكاملة في السوق. انقر على كل مرحلة لرؤية التفاصيل.
-                </p>
-            </div>
-            <div class="max-w-4xl mx-auto space-y-4 reveal">
-                <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-                    <div class="roadmap-header p-6 cursor-pointer flex justify-between items-center">
-                        <h4 class="font-bold text-xl text-blue-700">المرحلة ١: المشروع التجريبي والتحقق (السنة الأولى)</h4>
-                        <span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">‹</span>
-                    </div>
-                    <div class="roadmap-content px-6 text-gray-600 text-right">
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>تطوير منتج قابل للتطبيق بالحد الأدنى (MVP) مع الفلترة والأتمتة الأساسية.</li>
-                            <li>الشراكة مع مشتل محلي لإنشاء حقل اختبار واقعي.</li>
-                            <li>التحقق من جودة المياه المعالجة مقابل معايير ECP 501-2015 للدرجتين C و D.</li>
-                            <li>جمع بيانات عائد الاستثمار الأساسية (توفير المياه والطاقة والعمالة) وتحديدها كمياً.</li>
-                        </ul>
-                    </div>
-                </div>
-                 <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-                    <div class="roadmap-header p-6 cursor-pointer flex justify-between items-center">
-                        <h4 class="font-bold text-xl text-blue-700">المرحلة ٢: التسويق التجاري (السنة الثانية)</h4>
-                        <span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">‹</span>
-                    </div>
-                    <div class="roadmap-content px-6 text-gray-600 text-right">
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>هندسة خط إنتاج معياري: أنظمة أساسية (CW) واحترافية (MBR).</li>
-                            <li>بناء تطبيق جوال احترافي وآمن وقابل للتطوير مع بنية تحتية سحابية.</li>
-                            <li>استهداف المزارع التجارية المبكرة التي لديها دراسات حالة قوية لعائد الاستثمار.</li>
-                            <li>التعاقد مع مطور مشاريع كربون لوضع برنامج توليد الأرصدة رسميًا.</li>
-                        </ul>
-                    </div>
-                </div>
-                 <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-                    <div class="roadmap-header p-6 cursor-pointer flex justify-between items-center">
-                        <h4 class="font-bold text-xl text-blue-700">المرحلة ٣: التوسع والانتشار (السنة الثالثة فصاعدًا)</h4>
-                        <span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">‹</span>
-                    </div>
-                    <div class="roadmap-content px-6 text-gray-600 text-right">
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>إطلاق ميزات متميزة: وحدات كشف الآفات والتسميد الدقيق.</li>
-                            <li>تحويل نموذج العمل إلى اشتراك "الزراعة الدقيقة كخدمة" (PaaS).</li>
-                            <li>بدء إصدار وبيع أرصدة الكربون المعتمدة.</li>
-                            <li>توسيع نطاق المبيعات والتسويق بقوة في جميع القطاعات الزراعية المستهدفة في مصر.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section 8: Summary -->
-        <section id="summary" class="mb-20 md:mb-32 scroll-mt-20">
-             <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">ملخص المشروع: نظرة سريعة</h2>
-                 <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                   نظرة عامة موجزة وشاملة لتحليل الجدوى والاستثمار بأكمله، بدءًا من المشكلة الأساسية وحتى التوصيات الاستراتيجية.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal space-y-8 text-right">
-                <div>
-                    <h3 class="font-bold text-xl mb-3 text-amber-600">🟠 القسم الأول: حتمية الابتكار في مجال المياه</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li>نصيب الفرد من المياه في مصر ~610 م³/سنة، وهو أقل بكثير من خط فقر المياه المحدد من الأمم المتحدة.</li>
-                        <li>تستهلك الزراعة ما يصل إلى 85% من المياه، مع وجود هدر كبير بسبب الطرق التقليدية.</li>
-                        <li>يهدد سد النهضة بتقليص حصة النيل، مما قد يؤثر على 2 مليون فدان.</li>
-                        <li>تدعم الاستراتيجية الحكومية إعادة استخدام مياه الصرف الصحي المعالجة.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-xl mb-3 text-green-600">🟢 القسم الثاني والثالث: الحل والتحسينات التقنية</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li><strong class="font-semibold">المفهوم الأساسي:</strong> نظام مستقل يعمل بالطاقة الشمسية لإعادة تدوير المياه الرمادية للري الذكي.</li>
-                        <li><strong class="font-semibold">ترقية التقنية:</strong> الانتقال من الفلاتر الأساسية إلى عرض متدرج من <strong class="font-semibold">الأراضي الرطبة المُنشأة (CW)</strong> و<strong class="font-semibold">المفاعلات الحيوية الغشائية (MBR)</strong>.</li>
-                         <li><strong class="font-semibold">تطوير إنترنت الأشياء:</strong> استبدال Wi-Fi بـ <strong class="font-semibold">LoRaWAN®</strong> وترقية المستشعرات لتشمل الملوحة (EC) والمغذيات (NPK).</li>
-                         <li><strong class="font-semibold">الذكاء الاصطناعي والطاقة:</strong> تطبيق ذكاء اصطناعي ثلاثي الطبقات وهندسة نظام شمسي ببطاريات <strong class="font-semibold">LiFePO₄</strong> لاستقلالية تدوم 3-5 أيام.</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h3 class="font-bold text-xl mb-3 text-purple-600">🟣 القسم الرابع: النواحي التنظيمية والتطبيق العملي</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li><strong class="font-semibold">الكود المصري ECP 501-2015 هو المفتاح:</strong> يجب أن يكون النظام معياريًا لمطابقة درجة المعالجة مع نوع المحصول المسموح به قانونًا.</li>
-                        <li><strong class="font-semibold">نتائج مثبتة:</strong> تظهر دراسات الحالة أن الري الذكي يوفر 17-50% من المياه وما يصل إلى 75% من العمالة.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-xl mb-3" style="color: #6d4c41;">🟤 القسم الخامس: الاستثمار واستراتيجية العمل</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                         <li><strong class="font-semibold">توسيع الميزات:</strong> إضافة خدمات عالية القيمة مثل كشف الآفات والتسميد الدقيق بالذكاء الاصطناعي.</li>
-                         <li><strong class="font-semibold">إيرادات جديدة:</strong> تحقيق الدخل من الاستدامة عن طريق توليد وبيع أرصدة الكربون المعتمدة.</li>
-                         <li><strong class="font-semibold">نموذج العمل:</strong> التحول من المبيعات ذات التكلفة الرأسمالية العالية إلى نموذج اشتراك "AgriTech-as-a-Service".</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h3 class="font-bold text-xl mb-3 text-red-600">✅ القسم السادس: خارطة الطريق والخاتمة</h3>
-                     <ul class="list-disc list-inside space-y-2 text-gray-700">
-                         <li><strong class="font-semibold">المرحلة الأولى (التجريبية):</strong> التحقق من صحة MVP مع شريك زراعي في منطقة مجهدة مائيًا مثل بني سويف.</li>
-                         <li><strong class="font-semibold">المرحلة الثانية (التسويق التجاري):</strong> إطلاق أنظمة CW/MBR المعيارية وبدء اعتماد أرصدة الكربون.</li>
-                         <li><strong class="font-semibold">المرحلة الثالثة (التوسع):</strong> التوسع على الصعيد الوطني، وطرح ميزات الذكاء الاصطناعي المتميزة، والتحول الكامل إلى نموذج الخدمة.</li>
-                         <li><strong class="font-semibold">الخاتمة:</strong> المشروع حيوي وممكن، ويقدم مسارًا نحو زراعة مربحة وقادرة على التكيف مع المناخ في مصر.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 9: References -->
-        <section id="references" class="scroll-mt-20">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">المراجع</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">
-                    تمت استشارة المصادر التالية لتقديم البيانات والتحليلات ودراسات الحالة المعروضة في هذا التقرير.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal text-right">
-                <ol class="list-decimal list-inside space-y-4 text-sm text-gray-700">
-                    <li>(1, 5, 33) Ministry of Water Resources and Irrigation (MWRI), Egypt. "National Water Resources Plan (NWRP 2017-2037)." <a href="https://www.fao.org/aquastat/en/countries-and-basins/country-profiles/country/EGY" target="_blank" rel="noopener noreferrer" class="reference-link">(رابط لملخص منظمة الأغذية والزراعة)</a></li>
-                    <li>(2) World Bank. "Egypt Country Climate and Development Report." 2022. <a href="https://www.worldbank.org/en/country/egypt/publication/country-climate-and-development-report" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(3) Human Rights Watch. "'We Are a Land of the Thirsty': The Precarious Right to Water in Egypt." 2024. <a href="https://www.hrw.org/report/2024/04/23/we-are-land-thirsty/precarious-right-water-egypt" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(4) El-Ramady, H., et al. "Sustainable Agriculture and Climate Change in Egypt." 2013.</li>
-                    <li>(6) Foundational Project Document. "Smart Greywater Recycling System for Agricultural Lands." 2024.</li>
-                    <li>(7, 25) Aqeel, M., et al. "A review of the state of the art in smart agriculture." 2023.</li>
-                    <li>(8, 21) Popović, T., et al. "A Case Study of an Autonomous Irrigation System Based on IoT." 2021. <a href="https://www.mdpi.com/2073-4395/11/12/2485" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(9) El-Kholy, M. "Smart Irrigation System for Madinaty." 2021. <a href="https://www.researchgate.net/publication/356507727_Smart_Irrigation_System_for_Madinaty_A_case_study_for_a_huge_residential_compound" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(10, 12, 14, 16) Stefanakis, A. "The Role of Constructed Wetlands as Green Infrastructure for Sustainable Urban Water Management." 2019.</li>
-                    <li>(11, 13, 17) Friedler, E., et al. "The reuse of greywater for irrigation." 2013.</li>
-                    <li>(15, 18, 19, 20) Fountoulakis, M. S., et al. "Effect of hydraulic retention time on the performance of a sequencing batch reactor and a membrane bioreactor." 2010.</li>
-                    <li>(22, 23, 24) Kuşçu, H., & Tırtıl, A. "A review on the use of optical sensors in precision agriculture." 2022.</li>
-                    <li>(26, 27) Haider, S., et al. "A Review of Artificial Intelligence and IoT in Agriculture." 2023.</li>
-                    <li>(28, 29, 30) National Renewable Energy Laboratory (NREL). "Off-Grid Solar Power Systems: Sizing and Design." <a href="https://www.nrel.gov/research/publications.html" target="_blank" rel="noopener noreferrer" class="reference-link">(رابط عام)</a></li>
-                    <li>(31) Boxwell, M. "Solar Electricity Handbook."</li>
-                    <li>(32, 34, 35) Housing and Building National Research Center (HBRC), Egypt. "Egyptian Code of Practice for the Agricultural Use of Treated Wastewater (ECP 501-2015)."</li>
-                    <li>(36) Kumar, A., et al. "Performance evaluation of solar powered smart irrigation system in desert area of India." 2020.</li>
-                    <li>(37) Husa, D., et al. "Smart Irrigation System Based On Internet Of Things." 2021.</li>
-                    <li>(38) Blois, M. "Smart irrigation helps Washington apple growers cut water use by 52%." 2019.</li>
-                    <li>(39, 41, 43) Saleem, M. H., et al. "A Comprehensive Survey of Recent Trends in Deep Learning for Digital Scab Disease Detection in Plants." 2019.</li>
-                    <li>(40, 42, 44, 45) Fuentes, A., et al. "A robust deep-learning-based detector for real-time tomato plant diseases and pests recognition." 2017.</li>
-                    <li>(46) Semios. "Precision Agriculture." <a href="https://semios.com/" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(47, 48, 53) Verra. "Verified Carbon Standard (VCS)." <a href="https://verra.org/programs/verified-carbon-standard/" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(49, 50, 51, 52) Gold Standard. "Agriculture." <a href="https://www.goldstandard.org/our-work/scope/agriculture" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                    <li>(54) The Nature Conservancy. "Water Share." <a href="https://www.nature.org/en-us/what-we-do/our-insights/perspectives/water-share-colorado-river/" target="_blank" rel="noopener noreferrer" class="reference-link">(الرابط)</a></li>
-                </ol>
-            </div>
-        </section>
+        <!-- All sections will be dynamically populated by JS -->
+        <section id="challenge" class="text-center mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="solution" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="engineering" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="impact" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="investment" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="analysis" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="roadmap" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="summary" class="mb-20 md:mb-32 scroll-mt-20"></section>
+        <section id="references" class="scroll-mt-20"></section>
 
     </main>
 
     <footer class="bg-gray-800 text-white mt-24">
         <div class="container mx-auto px-6 py-8 text-center">
-            <p>&copy; 2024 رؤية الزراعة الذكية. تحليل تفاعلي لمستقبل مستدام للزراعة في مصر.</p>
+            <p id="footer-text">&copy; 2024 Agri-Tech Vision. An interactive analysis of a sustainable future for Egyptian agriculture.</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                en: {
+                    // NAV
+                    "logo-title": "Smart Agriculture",
+                    "logo-subtitle": "AI-Powered Greywater Recycling",
+                    "nav-challenge": "The Challenge", "mobile-nav-challenge": "The Challenge",
+                    "nav-solution": "The Solution", "mobile-nav-solution": "The Solution",
+                    "nav-engineering": "Engineering", "mobile-nav-engineering": "Engineering",
+                    "nav-impact": "Impact", "mobile-nav-impact": "Impact",
+                    "nav-investment": "Opportunity", "mobile-nav-investment": "Opportunity",
+                    "nav-analysis": "Analysis", "mobile-nav-analysis": "Analysis",
+                    "nav-roadmap": "Roadmap", "mobile-nav-roadmap": "Roadmap",
+                    "nav-summary": "Summary", "mobile-nav-summary": "Summary",
+                    "nav-references": "References", "mobile-nav-references": "References",
+                    "lang-switcher": "العربية", "mobile-lang-switcher": "العربية",
+                    // FOOTER
+                    "footer-text": "&copy; 2024 Agri-Tech Vision. An interactive analysis of a sustainable future for Egyptian agriculture."
+                },
+                ar: {
+                    // NAV
+                    "logo-title": "الزراعة الذكية",
+                    "logo-subtitle": "إعادة تدوير المياه الرمادية بالذكاء الاصطناعي",
+                    "nav-challenge": "التحدي", "mobile-nav-challenge": "التحدي",
+                    "nav-solution": "الحل", "mobile-nav-solution": "الحل",
+                    "nav-engineering": "الهندسة", "mobile-nav-engineering": "الهندسة",
+                    "nav-impact": "الأثر", "mobile-nav-impact": "الأثر",
+                    "nav-investment": "الفرصة", "mobile-nav-investment": "الفرصة",
+                    "nav-analysis": "التحليل", "mobile-nav-analysis": "التحليل",
+                    "nav-roadmap": "خارطة الطريق", "mobile-nav-roadmap": "خارطة الطريق",
+                    "nav-summary": "الملخص", "mobile-nav-summary": "الملخص",
+                    "nav-references": "المراجع", "mobile-nav-references": "المراجع",
+                    "lang-switcher": "English", "mobile-lang-switcher": "English",
+                    // FOOTER
+                    "footer-text": "&copy; 2024 رؤية الزراعة الذكية. تحليل تفاعلي لمستقبل مستدام للزراعة في مصر."
+                }
+            };
+
+            const sectionTemplates = {
+                challenge: (lang) => `
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'أزمة المياه في مصر: ضرورة زراعية ملحة' : "Egypt's Water Crisis: An Agricultural Imperative"}</h1>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'تواجه مصر تحديًا حرجًا في ندرة المياه يهدد أمنها الغذائي واستقرارها الاقتصادي. وبما أن القطاع الزراعي، الذي يمثل شريان الحياة للأمة، هو أكبر مستهلك للمياه، فإن الابتكار في مجال الري لم يعد مجرد فرصة، بل ضرورة حتمية للبقاء.' : "Egypt faces a critical water scarcity issue that threatens its food security and economic stability. The agricultural sector, vital to the nation's livelihood, is the largest consumer of water, making innovation in irrigation not just an opportunity, but a necessity for survival."}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal"><h3 class="text-4xl font-bold text-blue-600 mb-2" id="water-per-capita">610 m³</h3><p class="text-gray-700 font-medium">${lang === 'ar' ? 'نصيب الفرد من المياه' : 'Per Capita Water Availability'}</p><p class="text-sm text-gray-500 mt-2">${lang === 'ar' ? 'أقل من خط فقر الماء للأمم المتحدة' : 'Below UN water poverty line'}</p></div>
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal" style="transition-delay: 150ms;"><h3 class="text-4xl font-bold text-green-700 mb-2" id="agri-water-usage">~80%</h3><p class="text-gray-700 font-medium">${lang === 'ar' ? 'استهلاك المياه في الزراعة' : 'Agriculture Water Consumption'}</p><p class="text-sm text-gray-500 mt-2">${lang === 'ar' ? 'بسبب أساليب الري التقليدية' : 'Driven by inefficient methods'}</p></div>
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal" style="transition-delay: 300ms;"><h3 class="text-4xl font-bold text-red-600 mb-2" id="food-imports">~55%</h3><p class="text-gray-700 font-medium">${lang === 'ar' ? 'الاعتماد على استيراد الغذاء' : 'Food Import Dependency'}</p><p class="text-sm text-gray-500 mt-2">${lang === 'ar' ? 'يزداد مع تناقص الموارد المائية' : 'Grows as water availability declines'}</p></div>
+                    </div>
+                    <div class="bg-white p-4 md:p-8 rounded-xl border border-gray-200 shadow-lg reveal"><h3 class="text-2xl font-bold text-gray-700 mb-4">${lang === 'ar' ? 'الانخفاض المتوقع في توافر المياه' : 'Projected Decline in Water Availability'}</h3><div class="chart-container max-w-4xl h-80"><canvas id="waterCrisisChart"></canvas></div></div>`,
+                solution: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'النظام المتكامل: حل مغلق ومستدام' : 'The Integrated System: A Closed-Loop Solution'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'يقدم هذا المشروع نظامًا ذكيًا ومكتفيًا ذاتيًا يعيد تدوير المياه الرمادية لاستخدامها في الزراعة. يجمع النظام بين تنقية المياه والطاقة الشمسية والأتمتة القائمة على الذكاء الاصطناعي في منظومة واحدة متكاملة. انقر على كل مكون لاستكشاف دوره في تحقيق زراعة مستدامة.' : "This project proposes a self-sufficient, smart system that recycles greywater for agriculture. It combines water purification, solar power, and AI-driven automation into a single, cohesive ecosystem. Click on each component below to learn more about its role in creating a sustainable farming solution."}</p>
+                    </div>
+                    <div class="w-full bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                            <div class="order-2 lg:order-1 space-y-4">
+                                <div id="solution-1" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse"><span class="text-3xl bg-blue-100 text-blue-600 p-3 rounded-full">💧</span><div><h4 class="text-xl font-bold text-gray-800">${lang === 'ar' ? '١. تجميع المياه الرمادية' : '1. Greywater Collection'}</h4><p class="text-gray-600 hidden solution-desc">${lang === 'ar' ? 'يجمع مياه الصرف من الأحواض والاستحمام لإنشاء مصدر مياه مستمر داخل الموقع.' : 'Captures wastewater from sinks, showers, and laundry to create a consistent, on-site water source.'}</p></div></div>
+                                <div id="solution-2" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse"><span class="text-3xl bg-purple-100 text-purple-600 p-3 rounded-full">🔬</span><div><h4 class="text-xl font-bold text-gray-800">${lang === 'ar' ? '٢. فلترة متعددة المراحل' : '2. Multi-Stage Filtration'}</h4><p class="text-gray-600 hidden solution-desc">${lang === 'ar' ? 'تنقية المياه عبر نظام وحدات (مثل الأراضي الرطبة أو المفاعلات الحيوية) لتلبية معايير الجودة الزراعية.' : 'Purifies water using a modular treatment train (e.g., CW or MBR) to meet specific agricultural quality standards.'}</p></div></div>
+                                <div id="solution-3" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse"><span class="text-3xl bg-green-100 text-green-600 p-3 rounded-full">🌿</span><div><h4 class="text-xl font-bold text-gray-800">${lang === 'ar' ? '٣. الري والتحكم الذكي' : '3. Smart Irrigation & Control'}</h4><p class="text-gray-600 hidden solution-desc">${lang === 'ar' ? 'تستخدم وحدة تحكم صناعية (PLC) بيانات إنترنت الأشياء لأتمتة الري بالتنقيط بدقة.' : 'An industrial PLC uses IoT sensor data to automate drip irrigation, delivering water precisely when and where needed.'}</p></div></div>
+                                <div id="solution-4" class="solution-card p-5 rounded-lg border-2 border-transparent cursor-pointer bg-slate-50 transition-all duration-300 flex items-center space-x-4 rtl:space-x-reverse"><span class="text-3xl bg-yellow-100 text-yellow-600 p-3 rounded-full">☀️</span><div><h4 class="text-xl font-bold text-gray-800">${lang === 'ar' ? '٤. الذكاء الاصطناعي والطاقة الشمسية' : '4. AI Engine & Solar Power'}</h4><p class="text-gray-600 hidden solution-desc">${lang === 'ar' ? 'يعمل الذكاء الاصطناعي على تحسين الجدولة، مدعومًا بنظام طاقة شمسية مستقل تمامًا.' : 'An AI optimizes schedules, powered by a resilient LiFePO₄-based solar system for full off-grid autonomy.'}</p></div></div>
+                            </div>
+                            <div class="order-1 lg:order-2"><img src="${lang === 'ar' ? 'https://placehold.co/600x450/e2e8f0/333333?text=بنية+النظام' : 'https://placehold.co/600x450/e2e8f0/333333?text=System+Architecture'}" alt="System Illustration" id="solution-image" class="w-full h-auto rounded-lg object-cover shadow-md"></div>
+                        </div>
+                    </div>`,
+                engineering: (lang) => `
+                     <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'هندسة نظام هو الأفضل في فئته' : 'Engineering a Best-in-Class System'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'للانتقال من مجرد مفهوم إلى منتج تجاري، يعتمد النظام على تقنيات معيارية من الدرجة الصناعية. هذا يضمن الموثوقية والقابلية للتوسع والامتثال لأعلى معايير التكنولوجيا الزراعية الحديثة. استكشف المكونات الأساسية أدناه.' : "To move from a concept to a commercial product, the system leverages industrial-grade, modular technology. This ensures reliability, scalability, and compliance with the highest standards of modern AgriTech. Explore the core components below."}</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                        <div class="flex justify-center mb-8 border-b">
+                            <button data-tab="purification" class="tech-tab px-6 py-3 font-semibold text-lg active">${lang === 'ar' ? 'تنقية المياه' : 'Water Purification'}</button>
+                            <button data-tab="iot" class="tech-tab px-6 py-3 font-semibold text-lg">${lang === 'ar' ? 'إنترنت الأشياء الصناعي' : 'Industrial IoT'}</button>
+                            <button data-tab="ai" class="tech-tab px-6 py-3 font-semibold text-lg">${lang === 'ar' ? 'محرك الذكاء الاصطناعي' : 'AI Engine'}</button>
+                        </div>
+                        <div id="tab-content-purification">
+                             <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">${lang === 'ar' ? 'نظام معياري لمطابقة جودة المياه مع قيمة المحصول. حدد تقنية لعرض المواصفات التفصيلية.' : 'A tiered offering to match water quality with crop value. Select a technology to see detailed specifications.'}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div id="cw-card" class="tech-card p-6 border-2 border-green-600 rounded-lg bg-green-50 shadow-md cursor-pointer"><h4 class="font-bold text-xl mb-2 text-center text-green-800">${lang === 'ar' ? 'المستوى ١: الأراضي الرطبة المُنشأة (CW)' : 'Tier 1: Constructed Wetland (CW)'}</h4><p class="text-center text-sm text-gray-600">${lang === 'ar' ? 'فعالة من حيث التكلفة ومستدامة للمحاصيل غير الغذائية.' : 'Cost-effective and sustainable for non-food crops.'}</p></div>
+                                <div id="mbr-card" class="tech-card p-6 border rounded-lg bg-gray-50 cursor-pointer"><h4 class="font-bold text-xl mb-2 text-center">${lang === 'ar' ? 'المستوى ٢: المفاعل الحيوي الغشائي (MBR)' : 'Tier 2: Membrane Bioreactor (MBR)'}</h4><p class="text-center text-sm text-gray-600">${lang === 'ar' ? 'جودة فائقة للمحاصيل الغذائية عالية القيمة.' : 'Premium quality for high-value food crops.'}</p></div>
+                            </div>
+                            <div id="tech-details" class="mt-8 p-6 bg-gray-100 rounded-lg text-right"></div>
+                        </div>
+                        <div id="tab-content-iot" class="hidden">
+                            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">${lang === 'ar' ? 'شبكة استشعار وتحكم قوية مصممة للبيئات الزراعية القاسية، مما يضمن الموثوقية والقابلية للتطوير.' : 'A robust sensing and control network built for harsh agricultural environments, ensuring reliability and scalability.'}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                                <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">${lang === 'ar' ? 'مستشعرات صحة التربة' : 'Soil Health Sensors'}</h4><p class="text-sm text-gray-600">${lang === 'ar' ? 'مجّسات رطوبة وحرارة وملوحة (EC) متعددة الأعماق، ومستشعرات NPK.' : 'Multi-depth Moisture, Temperature & EC Probes, NPK sensors.'}</p></div>
+                                <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">${lang === 'ar' ? 'مستشعرات النبات والنظام' : 'Plant & System Sensors'}</h4><p class="text-sm text-gray-600">${lang === 'ar' ? 'أجهزة قياس نمو الساق، ومقاييس حرارة بالأشعة تحت الحمراء، وعدادات تدفق وضغط.' : 'Dendrometers, Infrared Thermometers, Flow & Pressure Meters.'}</p></div>
+                                <div class="p-4 bg-slate-50 rounded-lg border"><h4 class="font-bold">LoRaWAN® Connectivity</h4><p class="text-sm text-gray-600">${lang === 'ar' ? 'شبكة بعيدة المدى ومنخفضة الطاقة لتغطية المستشعرات على مستوى المزرعة.' : 'Long-range, low-power network for farm-wide sensor coverage.'}</p></div>
+                                <div class="p-4 bg-slate-50 rounded-lg border lg:col-span-3"><h4 class="font-bold">${lang === 'ar' ? 'تحكم PLC صناعي' : 'Industrial PLC Control'}</h4><p class="text-sm text-gray-600">${lang === 'ar' ? 'وحدة تحكم منطقية قابلة للبرمجة (PLC) قوية لتحل محل وحدات التحكم المصغرة للهواة لموثوقية فائقة.' : 'Hardened Programmable Logic Controller replaces hobbyist microcontrollers for superior reliability.'}</p></div>
+                            </div>
+                        </div>
+                        <div id="tab-content-ai" class="hidden">
+                             <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">${lang === 'ar' ? 'يتطور ذكاء النظام من الأتمتة البسيطة إلى مستشار زراعي رقمي يعتمد على البيانات.' : "The system's intelligence evolves from simple automation to a data-driven digital agronomist."}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                <div class="p-6 border rounded-lg bg-gray-50"><h4 class="font-bold text-xl mb-2">${lang === 'ar' ? 'المستوى ١: تفاعلي' : 'Layer 1: Reactive'}</h4><p class="text-gray-600">${lang === 'ar' ? 'أتمتة الري بناءً على عتبات استشعار بسيطة ومحددة مسبقًا.' : 'Automates irrigation based on simple, pre-set sensor thresholds.'}</p><div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">${lang === 'ar' ? 'المدخلات: مستشعرات التربة' : 'Input: Soil Sensors'}</div></div>
+                                <div class="p-6 border rounded-lg bg-gray-50"><h4 class="font-bold text-xl mb-2">${lang === 'ar' ? 'المستوى ٢: تنبؤي' : 'Layer 2: Predictive'}</h4><p class="text-gray-600">${lang === 'ar' ? 'يتنبأ باحتياجات المحاصيل المائية قبل 24-72 ساعة باستخدام نماذج تعلم الآلة.' : 'Forecasts crop water needs 24-72 hours in advance using ML models.'}</p><div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">${lang === 'ar' ? 'المدخلات: مستشعرات + بيانات الطقس' : 'Input: Sensors + Weather APIs'}</div></div>
+                                <div class="p-6 border-2 border-blue-600 rounded-lg bg-blue-50 shadow-md"><h4 class="font-bold text-xl mb-2 text-blue-800">${lang === 'ar' ? 'المستوى ٣: توجيهي' : 'Layer 3: Prescriptive'}</h4><p class="text-gray-600">${lang === 'ar' ? 'يقدم نصائح قابلة للتنفيذ مثل: "ملوحة عالية، يوصى بدورة غسيل".' : 'Provides actionable advice like "High salinity detected. Recommend flushing cycle."'}</p><div class="mt-4 font-mono text-xs text-blue-700 p-2 bg-blue-100 rounded">${lang === 'ar' ? 'المدخلات: مستشعرات + طقس + صور أقمار صناعية' : 'Input: Sensors + Weather + Satellite Data'}</div></div>
+                            </div>
+                        </div>
+                    </div>`,
+                impact: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'الأثر الواقعي والامتثال التنظيمي' : 'Real-World Impact & Compliance'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'يجب على النظام الناجح أن يمتثل للوائح وأن يقدم فوائد مثبتة. استكشف كود المياه المصري الحاسم ونتائج مشاريع الري الذكية الواقعية.' : "A successful system must comply with regulations and deliver proven benefits. Explore the critical Egyptian water code and results from smart irrigation projects."}</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal"><h3 class="font-bold text-2xl text-gray-700 mb-2">${lang === 'ar' ? 'مستكشف الامتثال للكود المصري ECP 501-2015' : 'ECP 501-2015 Compliance Navigator'}</h3><p class="text-gray-600 mb-6">${lang === 'ar' ? 'حدد درجة معالجة المياه لمعرفة المحاصيل المسموح بريها قانونًا بموجب القانون المصري.' : 'Select a water treatment grade to see which crops are legally permissible to irrigate under Egyptian law.'}</p><div class="flex flex-wrap gap-2 mb-6"><button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="A">${lang === 'ar' ? 'الدرجة أ' : 'Grade A'}</button><button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="B">${lang === 'ar' ? 'الدرجة ب' : 'Grade B'}</button><button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="C">${lang === 'ar' ? 'الدرجة ج' : 'Grade C'}</button><button class="ecp-button flex-grow p-3 rounded-md font-semibold bg-gray-200" data-grade="D">${lang === 'ar' ? 'الدرجة د' : 'Grade D'}</button></div><div id="ecp-details" class="bg-blue-50 p-6 rounded-lg transition-all duration-300 text-right"></div></div>
+                        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal"><h3 class="font-bold text-2xl text-gray-700 mb-2">${lang === 'ar' ? 'الفوائد المثبتة للري الذكي' : 'Proven Benefits of Smart Irrigation'}</h3><p class="text-gray-600 mb-6">${lang === 'ar' ? 'توضح دراسات الحالة من مصر وحول العالم مكاسب مالية وتشغيلية كبيرة.' : 'Case studies from Egypt and around the world demonstrate significant financial and operational gains.'}</p><div class="chart-container h-96"><canvas id="benefitsChart"></canvas></div></div>
+                    </div>`,
+                investment: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'الفرصة الاستثمارية' : 'The Investment Opportunity'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'تتوسع المنصة إلى ما هو أبعد من الري لتصبح نظامًا شاملاً لإدارة المزارع مع مصادر إيرادات متنوعة ومتكررة.' : 'The platform expands beyond irrigation into a comprehensive farm management system with diversified, recurring revenue streams.'}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300"><div class="text-5xl mb-4">🐞</div><h4 class="font-bold text-xl mb-2">${lang === 'ar' ? 'كشف الآفات والأمراض' : 'Pest & Disease Detection'}</h4><p class="text-gray-600 text-sm">${lang === 'ar' ? 'يكتشف الذكاء الاصطناعي تهديدات المحاصيل مبكرًا، مما يتيح التدخل الدقيق ويقلل الخسائر.' : 'AI-powered computer vision detects crop threats early, enabling precise intervention and reducing losses.'}</p></div>
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300" style="transition-delay: 150ms;"><div class="text-5xl mb-4">🧪</div><h4 class="font-bold text-xl mb-2">${lang === 'ar' ? 'التسميد الدقيق' : 'Precision Fertigation'}</h4><p class="text-gray-600 text-sm">${lang === 'ar' ? 'توفر مستشعرات NPK والحاقنات المتحكم بها العناصر الغذائية بدقة، مما يقلل من هدر الأسمدة.' : 'NPK sensors and controlled injectors deliver exact nutrients needed, optimizing fertilizer use and cutting costs.'}</p></div>
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md reveal text-center transform hover:scale-105 transition-transform duration-300" style="transition-delay: 300ms;"><div class="text-5xl mb-4">♻️</div><h4 class="font-bold text-xl mb-2">${lang === 'ar' ? 'إيرادات أرصدة الكربون' : 'Carbon Credit Revenue'}</h4><p class="text-gray-600 text-sm">${lang === 'ar' ? 'يولد توفير الطاقة والمياه أرصدة كربون قابلة للتداول، مما يخلق مصدر دخل جديد للمزرعة.' : 'Solar power and water savings generate tradable carbon credits, creating a new revenue stream for the farm.'}</p></div>
+                    </div>`,
+                analysis: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'التحليل النقدي: SWOT والاستراتيجية' : 'Critical Analysis: SWOT & Strategy'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'تحليل متوازن لنقاط قوة المشروع وضعفه وفرصه وتهديداته، إلى جانب استراتيجيات واضحة لتخفيف المخاطر والاستفادة من المزايا.' : "A balanced analysis of the project's strengths, weaknesses, opportunities, and threats, alongside clear strategies to mitigate risks and capitalize on advantages."}</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                            <div><h3 class="text-2xl font-bold text-green-600 mb-4">${lang === 'ar' ? 'نقاط القوة (المزايا التنافسية)' : 'STRENGTHS (Competitive Advantages)'}</h3><ul class="space-y-4 text-right">${lang === 'ar' ? `<li><strong class="font-semibold block">١. حل أزمة وطنية حرجة:</strong> يعالج ندرة المياه الحادة في مصر وهدرها في الزراعة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: الشراكة مع وزارة الموارد المائية والري؛ استهداف المناطق المجهدة مائيًا مثل الفيوم.</em></li><li><strong class="font-semibold block">٢. توافق تنظيمي قوي:</strong> يتماشى مع الكود المصري ECP 501-2015 الذي يشجع على إعادة استخدام مياه الصرف الصحي المعالجة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: تصميم وحدات فلترة معيارية (CW مقابل MBR) والحصول على شهادة رسمية.</em></li><li><strong class="font-semibold block">٣. تقنية مُجرّبة:</strong> أثبت الري الذكي القائم على إنترنت الأشياء توفيرًا للمياه بنسبة تصل إلى 50٪ في دراسات حالة محلية. <em class="block text-sm text-gray-500 mt-1">التنفيذ: استخدام أجهزة استشعار موثوقة ومتاحة تجارياً والبدء بأساليب فلترة مُجرّبة.</em></li><li><strong class="font-semibold block">٤. مصادر إيرادات متعددة:</strong> أكثر استدامة من بيع الأجهزة لمرة واحدة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: تطبيق نموذج اشتراك وبيع أرصدة الكربون عبر معيار Gold Standard.</em></li><li><strong class="font-semibold block">٥. قابلية التوسع والنمذجة:</strong> قابل للتكيف مع المزارع الصغيرة والشركات الزراعية الكبيرة. <em class="block text-sm text-gray-500 mt-1">التنفيذ: تقديم نسخة "أساسية" منخفضة التكلفة (CW) ونسخة "احترافية" عالية المواصفات (MBR).</em></li>` : `<li><strong class="font-semibold block">1. Solves a Critical National Crisis:</strong> Addresses Egypt's severe water scarcity and agricultural waste. <em class="block text-sm text-gray-500 mt-1">Implementation: Partner with MWRI; target water-stressed regions like Fayoum.</em></li><li><strong class="font-semibold block">2. Strong Regulatory Fit:</strong> Aligns with ECP 501-2015, which encourages treated wastewater reuse. <em class="block text-sm text-gray-500 mt-1">Implementation: Design modular filtration (CW vs. MBR) and seek official certification.</em></li><li><strong class="font-semibold block">3. Proven Technology:</strong> IoT irrigation has demonstrated up to 50% water savings in local case studies. <em class="block text-sm text-gray-500 mt-1">Implementation: Use reliable off-the-shelf sensors and start with proven filtration methods.</em></li><li><strong class="font-semibold block">4. Multiple Revenue Streams:</strong> More sustainable than one-time hardware sales. <em class="block text-sm text-gray-500 mt-1">Implementation: Use a subscription model and sell carbon credits via Gold Standard.</em></li><li><strong class="font-semibold block">5. Scalable & Modular:</strong> Adaptable for both smallholders and large agribusinesses. <em class="block text-sm text-gray-500 mt-1">Implementation: Offer a low-cost "Basic" CW version and a high-spec "Pro" MBR version.</em></li>`}</ul></div>
+                            <div><h3 class="text-2xl font-bold text-red-600 mb-4">${lang === 'ar' ? 'نقاط الضعف (المخاطر والتحديات)' : 'WEAKNESSES (Risks & Challenges)'}</h3><ul class="space-y-4 text-right">${lang === 'ar' ? `<li><strong class="font-semibold block">١. تكاليف أولية مرتفعة:</strong> يمكن أن تكون أنظمة MBR باهظة الثمن للمزارعين. <em class="block text-sm text-gray-500 mt-1">الحل: البدء بمشاريع تجريبية منخفضة التكلفة والبحث عن منح حكومية أو استثمارات مؤثرة.</em></li><li><strong class="font-semibold block">٢. مقاومة المزارعين للتقنية الجديدة:</strong> قد يتردد المزارعون التقليديون في تبني الأتمتة. <em class="block text-sm text-gray-500 mt-1">الحل: تقديم تجارب تجريبية مجانية لإثبات عائد الاستثمار وبرامج تدريبية.</em></li><li><strong class="font-semibold block">٣. مشكلات الصيانة والانسداد:</strong> تتطلب الفلاتر والأغشية صيانة دورية. <em class="block text-sm text-gray-500 mt-1">الحل: تنبيهات آلية للتنظيف؛ تضمين الصيانة في نموذج الاشتراك.</em></li><li><strong class="font-semibold block">٤. الاعتماد على الطاقة الشمسية:</strong> يمكن أن يقلل الغبار من كفاءة الألواح. <em class="block text-sm text-gray-500 mt-1">الحل: استخدام ألواح ذات طلاء ذاتي التنظيف وبطارية احتياطية قوية (LiFePO₄) لمدة 3-5 أيام.</em></li><li><strong class="font-semibold block">٥. محدودية بيانات الذكاء الاصطناعي في البداية:</strong> تحتاج النماذج التنبؤية إلى بيانات تاريخية. <em class="block text-sm text-gray-500 mt-1">الحل: البدء بري قائم على القواعد ثم دمج واجهات برمجة تطبيقات الطقس وبيانات الأقمار الصناعية تدريجياً.</em></li>` : `<li><strong class="font-semibold block">1. High Upfront Costs:</strong> MBR systems can be expensive for farmers. <em class="block text-sm text-gray-500 mt-1">Solution: Start with low-cost pilots and seek grants; offer a service model to eliminate farmer CAPEX.</em></li><li><strong class="font-semibold block">2. Farmer Resistance to New Tech:</strong> Traditional farmers may be hesitant to adopt automation. <em class="block text-sm text-gray-500 mt-1">Solution: Offer free pilot trials to demonstrate clear ROI; provide comprehensive training.</em></li><li><strong class="font-semibold block">3. Maintenance & Fouling:</strong> Filters and membranes require regular upkeep. <em class="block text-sm text-gray-500 mt-1">Solution: Build automated cleaning alerts into the app; include maintenance in the subscription fee.</em></li><li><strong class="font-semibold block">4. Dependence on Solar Power:</strong> Panel efficiency can be reduced by dust and sand. <em class="block text-sm text-gray-500 mt-1">Solution: Use panels with self-cleaning coatings and a robust LiFePO₄ battery backup for 3-5 days.</em></li><li><strong class="font-semibold block">5. Limited Initial AI Data:</strong> Predictive models need data to become accurate. <em class="block text-sm text-gray-500 mt-1">Solution: Start with rule-based triggers and gradually train the AI by integrating weather and satellite data.</em></li>`}</ul></div>
+                        </div>
+                        <div class="mt-12 pt-8 border-t"><h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">${lang === 'ar' ? 'استراتيجية التنفيذ وملخص SWOT' : 'Implementation Strategy & SWOT Summary'}</h3><div class="overflow-x-auto"><table class="w-full text-right"><thead><tr class="bg-gray-50"><th class="p-3 font-semibold">${lang === 'ar' ? 'الفئة' : 'Category'}</th><th class="p-3 font-semibold">${lang === 'ar' ? 'العامل' : 'Factor'}</th><th class="p-3 font-semibold">${lang === 'ar' ? 'استراتيجية التخفيف / الاستفادة' : 'Mitigation / Capitalization Strategy'}</th></tr></thead><tbody><tr class="border-b"><td class="p-3 text-green-600 font-bold">${lang === 'ar' ? 'قوة' : 'Strength'}</td><td class="p-3">${lang === 'ar' ? 'يحل أزمة مياه' : 'Solves water crisis'}</td><td class="p-3">${lang === 'ar' ? 'الشراكة مع الحكومة (MWRI) والتوافق مع الاستراتيجية الوطنية للمياه 2017-2037.' : 'Partner with government (MWRI) and align with National Water Strategy 2017-2037.'}</td></tr><tr class="border-b"><td class="p-3 text-green-600 font-bold">${lang === 'ar' ? 'قوة' : 'Strength'}</td><td class="p-3">${lang === 'ar' ? 'مصادر إيرادات متعددة' : 'Multiple revenue streams'}</td><td class="p-3">${lang === 'ar' ? 'التركيز على نموذج الاشتراك ("AgriTech-as-a-Service") بالإضافة إلى مبيعات أرصدة الكربون.' : 'Focus on subscription model ("AgriTech-as-a-Service") plus carbon credit sales.'}</td></tr><tr class="border-b"><td class="p-3 text-red-600 font-bold">${lang === 'ar' ? 'ضعف' : 'Weakness'}</td><td class="p-3">${lang === 'ar' ? 'تكاليف أولية مرتفعة' : 'High upfront costs'}</td><td class="p-3">${lang === 'ar' ? 'البدء بأنظمة CW منخفضة التكلفة للمرحلة التجريبية؛ استخدام نموذج الاشتراك لتقليل حاجز الدخول.' : 'Start with low-cost CW systems for pilot phase; use subscription model to reduce barrier to entry.'}</td></tr><tr class="border-b"><td class="p-3 text-red-600 font-bold">${lang === 'ar' ? 'ضعف' : 'Weakness'}</td><td class="p-3">${lang === 'ar' ? 'مقاومة المزارعين للتقنية' : "Farmer's tech resistance"}</td><td class="p-3">${lang === 'ar' ? 'إجراء برامج تجريبية مجانية وعملية مع التعاونيات الزراعية المحلية لبناء الثقة وإظهار عائد الاستثمار.' : 'Run free, hands-on pilot programs with local cooperatives to build trust and demonstrate ROI.'}</td></tr><tr class="border-b"><td class="p-3 text-blue-600 font-bold">${lang === 'ar' ? 'فرصة' : 'Opportunity'}</td><td class="p-3">${lang === 'ar' ? 'سوق أرصدة الكربون' : 'Carbon credit market'}</td><td class="p-3">${lang === 'ar' ? 'التعامل مع مطور مشاريع في وقت مبكر لاعتماد النظام عبر Gold Standard أو Verra للحصول على أرصدة عالية الجودة.' : 'Engage a developer early to certify the system via Gold Standard or Verra for high-quality credits.'}</td></tr><tr class="border-b"><td class="p-3 text-orange-600 font-bold">${lang === 'ar' ? 'تهديد' : 'Threat'}</td><td class="p-3">${lang === 'ar' ? 'المنافسة' : 'Competition'}</td><td class="p-3">${lang === 'ar' ? 'التركيز على الاحتياجات المحلية الفائقة (الامتثال لـ ECP 501-2015) وبناء نموذج خدمة متكامل ومتفوق.' : 'Focus on hyper-local needs (ECP 501-2015 compliance) and build a superior, integrated service model.'}</td></tr></tbody></table></div></div>
+                    </div>`,
+                roadmap: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'خارطة الطريق الاستراتيجية للنجاح' : 'Strategic Roadmap to Success'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'يضمن النهج المرحلي نموًا منضبطًا، بدءًا من التحقق الأولي وحتى الريادة الكاملة في السوق. انقر على كل مرحلة لرؤية التفاصيل.' : "A phased approach ensures disciplined growth, from initial validation to full-scale market leadership. Click each phase to see details."}</p>
+                    </div>
+                    <div class="max-w-4xl mx-auto space-y-4 reveal">
+                        <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"><div class="roadmap-header p-6 cursor-pointer flex justify-between items-center"><h4 class="font-bold text-xl text-blue-700">${lang === 'ar' ? 'المرحلة ١: المشروع التجريبي والتحقق (السنة الأولى)' : 'Phase 1: Pilot & Validation (Year 1)'}</h4><span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">‹</span></div><div class="roadmap-content px-6 text-gray-600 text-right"><ul class="list-disc list-inside space-y-2">${lang === 'ar' ? '<li>تطوير منتج قابل للتطبيق بالحد الأدنى (MVP) مع الفلترة والأتمتة الأساسية.</li><li>الشراكة مع مشتل محلي لإنشاء حقل اختبار واقعي.</li><li>التحقق من جودة المياه المعالجة مقابل معايير ECP 501-2015 للدرجتين C و D.</li><li>جمع بيانات عائد الاستثمار الأساسية (توفير المياه والطاقة والعمالة) وتحديدها كمياً.</li>' : '<li>Develop Minimum Viable Product (MVP) with core filtration and automation.</li><li>Partner with a local nursery to establish a real-world testbed.</li><li>Validate effluent quality against ECP 501-2015 Grades C & D.</li><li>Collect and quantify baseline ROI data (water, energy, labor savings).</li>'}</ul></div></div>
+                        <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"><div class="roadmap-header p-6 cursor-pointer flex justify-between items-center"><h4 class="font-bold text-xl text-blue-700">${lang === 'ar' ? 'المرحلة ٢: التسويق التجاري (السنة الثانية)' : 'Phase 2: Commercialize (Year 2)'}</h4><span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">‹</span></div><div class="roadmap-content px-6 text-gray-600 text-right"><ul class="list-disc list-inside space-y-2">${lang === 'ar' ? '<li>هندسة خط إنتاج معياري: أنظمة أساسية (CW) واحترافية (MBR).</li><li>بناء تطبيق جوال احترافي وآمن وقابل للتطوير مع بنية تحتية سحابية.</li><li>استهداف المزارع التجارية المبكرة التي لديها دراسات حالة قوية لعائد الاستثمار.</li><li>التعاقد مع مطور مشاريع كربون لوضع برنامج توليد الأرصدة رسميًا.</li>' : '<li>Engineer modular product line: Basic (CW) and Pro (MBR) systems.</li><li>Build professional, secure, and scalable mobile app and cloud backend.</li><li>Target early-adopter commercial farms with strong ROI case studies.</li><li>Engage carbon project developer to formalize credit generation program.</li>'}</ul></div></div>
+                        <div class="roadmap-item bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"><div class="roadmap-header p-6 cursor-pointer flex justify-between items-center"><h4 class="font-bold text-xl text-blue-700">${lang === 'ar' ? 'المرحلة ٣: التوسع والانتشار (السنة الثالثة فصاعدًا)' : 'Phase 3: Scale-Up & Expansion (Year 3+)'}</h4><span class="roadmap-arrow text-blue-700 text-2xl font-bold transform transition-transform duration-300">‹</span></div><div class="roadmap-content px-6 text-gray-600 text-right"><ul class="list-disc list-inside space-y-2">${lang === 'ar' ? '<li>إطلاق ميزات متميزة: وحدات كشف الآفات والتسميد الدقيق.</li><li>تحويل نموذج العمل إلى اشتراك "الزراعة الدقيقة كخدمة" (PaaS).</li><li>بدء إصدار وبيع أرصدة الكربون المعتمدة.</li><li>توسيع نطاق المبيعات والتسويق بقوة في جميع القطاعات الزراعية المستهدفة في مصر.</li>' : '<li>Launch premium features: Pest Detection and Precision Fertigation modules.</li><li>Transition business model to "Precision-Ag-as-a-Service" (PaaS) subscription.</li><li>Begin issuance and sale of verified carbon credits.</li><li>Aggressively scale sales and marketing across all target agricultural sectors in Egypt.</li>'}</ul></div></div>
+                    </div>`,
+                summary: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'ملخص المشروع: نظرة سريعة' : 'Project Summary: At a Glance'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'نظرة عامة موجزة وشاملة لتحليل الجدوى والاستثمار بأكمله، بدءًا من المشكلة الأساسية وحتى التوصيات الاستراتيجية.' : 'A final, high-level overview of the entire feasibility and investment analysis, from the core problem to the strategic recommendations.'}</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal space-y-8 text-right">
+                        <div><h3 class="font-bold text-xl mb-3 text-amber-600">${lang === 'ar' ? '🟠 القسم الأول: حتمية الابتكار في مجال المياه' : '🟠 Section I: The Urgency of Water Innovation'}</h3><ul class="list-disc list-inside space-y-2 text-gray-700">${lang === 'ar' ? '<li>نصيب الفرد من المياه في مصر ~610 م³/سنة، وهو أقل بكثير من خط فقر المياه المحدد من الأمم المتحدة.</li><li>تستهلك الزراعة ما يصل إلى 85% من المياه، مع وجود هدر كبير بسبب الطرق التقليدية.</li><li>يهدد سد النهضة بتقليص حصة النيل، مما قد يؤثر على 2 مليون فدان.</li><li>تدعم الاستراتيجية الحكومية إعادة استخدام مياه الصرف الصحي المعالجة.</li>' : `<li>Egypt's per capita water is ~610 m³/year, well below the UN's 1,000 m³ water poverty line.</li><li>Agriculture consumes up to 85% of water, largely through inefficient methods.</li><li>The GERD threatens to reduce Nile flow, potentially impacting 2 million acres of farmland.</li><li>Government strategy actively promotes reuse of treated wastewater, creating policy support.</li>`}</ul></div>
+                        <div><h3 class="font-bold text-xl mb-3 text-green-600">${lang === 'ar' ? '🟢 القسم الثاني والثالث: الحل والتحسينات التقنية' : '🟢 Section II & III: The Solution & Tech Enhancements'}</h3><ul class="list-disc list-inside space-y-2 text-gray-700">${lang === 'ar' ? `<li><strong class="font-semibold">المفهوم الأساسي:</strong> نظام مستقل يعمل بالطاقة الشمسية لإعادة تدوير المياه الرمادية للري الذكي.</li><li><strong class="font-semibold">ترقية التقنية:</strong> الانتقال من الفلاتر الأساسية إلى عرض متدرج من <strong class="font-semibold">الأراضي الرطبة المُنشأة (CW)</strong> و<strong class="font-semibold">المفاعلات الحيوية الغشائية (MBR)</strong>.</li><li><strong class="font-semibold">تطوير إنترنت الأشياء:</strong> استبدال Wi-Fi بـ <strong class="font-semibold">LoRaWAN®</strong> وترقية المستشعرات لتشمل الملوحة (EC) والمغذيات (NPK).</li><li><strong class="font-semibold">الذكاء الاصطناعي والطاقة:</strong> تطبيق ذكاء اصطناعي ثلاثي الطبقات وهندسة نظام شمسي ببطاريات <strong class="font-semibold">LiFePO₄</strong> لاستقلالية تدوم 3-5 أيام.</li>` : `<li><strong class="font-semibold">Core Concept:</strong> A self-sufficient, solar-powered greywater recycling system with AI-driven irrigation.</li><li><strong class="font-semibold">Tech Upgrade:</strong> Move from basic filters to a tiered offering of <strong class="font-semibold">Constructed Wetlands (CW)</strong> for low-grade water and <strong class="font-semibold">Membrane Bioreactors (MBR)</strong> for high-grade, food-safe water.</li><li><strong class="font-semibold">IoT Overhaul:</strong> Replace Wi-Fi with <strong class="font-semibold">LoRaWAN®</strong> for long-range connectivity and upgrade sensors to include soil EC (salinity) and NPK (nutrients).</li><li><strong class="font-semibold">AI & Power:</strong> Implement a 3-layer AI (Reactive, Predictive, Prescriptive) and engineer the solar system with <strong class="font-semibold">LiFePO₄</strong> batteries for 3-5 days of autonomy.</li>`}</ul></div>
+                        <div><h3 class="font-bold text-xl mb-3 text-purple-600">${lang === 'ar' ? '🟣 القسم الرابع: النواحي التنظيمية والتطبيق العملي' : '🟣 Section IV: Regulatory & Practical Deployment'}</h3><ul class="list-disc list-inside space-y-2 text-gray-700">${lang === 'ar' ? `<li><strong class="font-semibold">الكود المصري ECP 501-2015 هو المفتاح:</strong> يجب أن يكون النظام معياريًا لمطابقة درجة المعالجة مع نوع المحصول المسموح به قانونًا.</li><li><strong class="font-semibold">نتائج مثبتة:</strong> تظهر دراسات الحالة أن الري الذكي يوفر 17-50% من المياه وما يصل إلى 75% من العمالة.</li>` : `<li><strong class="font-semibold">ECP 501-2015 is key:</strong> The system must be modular to match treatment grade (A, B, C, D) with the legally permitted crop type.</li><li><strong class="font-semibold">Proven Results:</strong> Case studies (Madinaty, Delta Agrar) show smart irrigation saves 17-50% of water and up to 75% of labor.</li>`}</ul></div>
+                        <div><h3 class="font-bold text-xl mb-3" style="color: #6d4c41;">${lang === 'ar' ? '🟤 القسم الخامس: الاستثمار واستراتيجية العمل' : '🟤 Section V: Investment & Business Strategy'}</h3><ul class="list-disc list-inside space-y-2 text-gray-700">${lang === 'ar' ? `<li><strong class="font-semibold">توسيع الميزات:</strong> إضافة خدمات عالية القيمة مثل كشف الآفات والتسميد الدقيق بالذكاء الاصطناعي.</li><li><strong class="font-semibold">إيرادات جديدة:</strong> تحقيق الدخل من الاستدامة عن طريق توليد وبيع أرصدة الكربون المعتمدة.</li><li><strong class="font-semibold">نموذج العمل:</strong> التحول من المبيعات ذات التكلفة الرأسمالية العالية إلى نموذج اشتراك "AgriTech-as-a-Service".</li>` : `<li><strong class="font-semibold">Feature Expansion:</strong> Add high-value services like AI-driven pest detection and precision fertigation.</li><li><strong class="font-semibold">New Revenue:</strong> Monetize sustainability by generating and selling certified carbon credits (e.g., via Gold Standard or Verra).</li><li><strong class="font-semibold">Business Model:</strong> Shift from high-CAPEX sales to a subscription-based <strong class="font-semibold">"AgriTech-as-a-Service"</strong> model for predictable, scalable revenue.</li>`}</ul></div>
+                        <div><h3 class="font-bold text-xl mb-3 text-red-600">${lang === 'ar' ? '✅ القسم السادس: خارطة الطريق والخاتمة' : '✅ Section VI: Roadmap & Conclusion'}</h3><ul class="list-disc list-inside space-y-2 text-gray-700">${lang === 'ar' ? `<li><strong class="font-semibold">المرحلة الأولى (التجريبية):</strong> التحقق من صحة MVP مع شريك زراعي في منطقة مجهدة مائيًا مثل بني سويف.</li><li><strong class="font-semibold">المرحلة الثانية (التسويق التجاري):</strong> إطلاق أنظمة CW/MBR المعيارية وبدء اعتماد أرصدة الكربون.</li><li><strong class="font-semibold">المرحلة الثالثة (التوسع):</strong> التوسع على الصعيد الوطني، وطرح ميزات الذكاء الاصطناعي المتميزة، والتحول الكامل إلى نموذج الخدمة.</li><li><strong class="font-semibold">الخاتمة:</strong> المشروع حيوي وممكن، ويقدم مسارًا نحو زراعة مربحة وقادرة على التكيف مع المناخ في مصر.</li>` : `<li><strong class="font-semibold">Phase 1 (Pilot):</strong> Validate MVP with a partner farm in a water-stressed region like Beni Suef.</li><li><strong class="font-semibold">Phase 2 (Commercialize):</strong> Launch modular CW/MBR systems and begin carbon credit certification.</li><li><strong class="font-semibold">Phase 3 (Scale):</strong> Expand nationwide, roll out premium AI features, and transition fully to a service model.</li><li><strong class="font-semibold">Conclusion:</strong> The project is vital and feasible, offering a path to profitable, climate-resilient agriculture for Egypt.</li>`}</ul></div>
+                    </div>`,
+                references: (lang) => `
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 reveal">${lang === 'ar' ? 'المراجع' : 'References'}</h2>
+                        <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-12 reveal">${lang === 'ar' ? 'تمت استشارة المصادر التالية لتقديم البيانات والتحليلات ودراسات الحالة المعروضة في هذا التقرير.' : 'The following sources were consulted to provide the data, analysis, and case studies presented in this report.'}</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg reveal text-right">
+                        <ol class="list-decimal list-inside space-y-4 text-sm text-gray-700">
+                           <li>(1, 5, 33) Ministry of Water Resources and Irrigation (MWRI), Egypt. "National Water Resources Plan (NWRP 2017-2037)." <a href="https://www.fao.org/aquastat/en/countries-and-basins/country-profiles/country/EGY" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(رابط لملخص منظمة الأغذية والزراعة)' : '(Link to FAO Summary)'}</a></li>
+                           <li>(2) World Bank. "Egypt Country Climate and Development Report." 2022. <a href="https://www.worldbank.org/en/country/egypt/publication/country-climate-and-development-report" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                           <li>(3) Human Rights Watch. "'We Are a Land of the Thirsty': The Precarious Right to Water in Egypt." 2024. <a href="https://www.hrw.org/report/2024/04/23/we-are-land-thirsty/precarious-right-water-egypt" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                           <li>(8, 21) Popović, T., et al. "A Case Study of an Autonomous Irrigation System Based on IoT." 2021. <a href="https://www.mdpi.com/2073-4395/11/12/2485" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                           <li>(9) El-Kholy, M. "Smart Irrigation System for Madinaty." 2021. <a href="https://www.researchgate.net/publication/356507727_Smart_Irrigation_System_for_Madinaty_A_case_study_for_a_huge_residential_compound" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                           <li>(47, 48, 53) Verra. "Verified Carbon Standard (VCS)." <a href="https://verra.org/programs/verified-carbon-standard/" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                           <li>(49, 50, 51, 52) Gold Standard. "Agriculture." <a href="https://www.goldstandard.org/our-work/scope/agriculture" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                           <li>(54) The Nature Conservancy. "Water Share." <a href="https://www.nature.org/en-us/what-we-do/our-insights/perspectives/water-share-colorado-river/" target="_blank" rel="noopener noreferrer" class="reference-link">${lang === 'ar' ? '(الرابط)' : '(Link)'}</a></li>
+                        </ol>
+                    </div>`
+            };
+            
+            let currentLang = 'en';
+            let waterCrisisChart, benefitsChart;
+
+            const setLanguage = (lang) => {
+                currentLang = lang;
+                const dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = lang;
+                document.documentElement.dir = dir;
+
+                Object.keys(translations.en).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+
+                Object.keys(sectionTemplates).forEach(key => {
+                    const section = document.getElementById(key);
+                    if (section) {
+                        section.innerHTML = sectionTemplates[key](lang);
+                    }
+                });
+                
+                recreateCharts(lang);
+                addInteractivity(lang);
+            };
+
+            const toggleLanguage = () => {
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+                setLanguage(newLang);
+            };
+            
+            const addInteractivity = (lang) => {
+                // Animate numbers
+                const statsObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const el = entry.target;
+                            const targetVal = parseInt(el.dataset.value);
+                            animateValue(el, 0, targetVal, 1500, lang);
+                            statsObserver.unobserve(el);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                document.getElementById('water-per-capita').dataset.value = '610';
+                document.getElementById('water-per-capita').dataset.unit = lang === 'ar' ? ' م³' : ' m³';
+                document.getElementById('agri-water-usage').dataset.value = '80';
+                document.getElementById('agri-water-usage').dataset.unit = '%';
+                document.getElementById('food-imports').dataset.value = '55';
+                document.getElementById('food-imports').dataset.unit = '%';
+                
+                statsObserver.observe(document.getElementById('water-per-capita'));
+                statsObserver.observe(document.getElementById('agri-water-usage'));
+                statsObserver.observe(document.getElementById('food-imports'));
+
+                // Solution Cards
+                const solutionCards = document.querySelectorAll('.solution-card');
+                const solutionImage = document.getElementById('solution-image');
+                const solutionImages = {
+                    'solution-1': lang === 'ar' ? 'https://placehold.co/600x450/bee3f8/2c5282?text=التجميع' : 'https://placehold.co/600x450/bee3f8/2c5282?text=Collection',
+                    'solution-2': lang === 'ar' ? 'https://placehold.co/600x450/d6bcfa/44337a?text=التنقية' : 'https://placehold.co/600x450/d6bcfa/44337a?text=Purification',
+                    'solution-3': lang === 'ar' ? 'https://placehold.co/600x450/a7f3d0/047857?text=التحكم+الذكي' : 'https://placehold.co/600x450/a7f3d0/047857?text=Smart+Control',
+                    'solution-4': lang === 'ar' ? 'https://placehold.co/600x450/fef08a/854d0e?text=الذكاء+الاصطناعي+والطاقة' : 'https://placehold.co/600x450/fef08a/854d0e?text=AI+and+Power',
+                };
+                solutionCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        solutionCards.forEach(c => {
+                            c.classList.remove('border-blue-500', 'bg-white', 'shadow-lg');
+                            c.querySelector('.solution-desc').classList.add('hidden');
+                        });
+                        card.classList.add('border-blue-500', 'bg-white', 'shadow-lg');
+                        card.querySelector('.solution-desc').classList.remove('hidden');
+                        solutionImage.src = solutionImages[card.id];
+                    });
+                });
+                solutionCards[0].click();
+
+                // Engineering Tabs
+                const techTabs = document.querySelectorAll('.tech-tab');
+                const techTabContents = {
+                    purification: document.getElementById('tab-content-purification'),
+                    iot: document.getElementById('tab-content-iot'),
+                    ai: document.getElementById('tab-content-ai')
+                };
+                techTabs.forEach(button => {
+                    button.addEventListener('click', () => {
+                        techTabs.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        Object.values(techTabContents).forEach(content => content.classList.add('hidden'));
+                        techTabContents[button.dataset.tab].classList.remove('hidden');
+                    });
+                });
+
+                // Engineering Tech Details
+                setupTechDetails(lang);
+
+                // ECP Navigator
+                setupEcpNavigator(lang);
+
+                // Roadmap Accordion
+                document.querySelectorAll('.roadmap-header').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const item = header.parentElement;
+                        item.classList.toggle('active');
+                    });
+                });
+                
+                // Scroll Reveal
+                const revealElements = document.querySelectorAll('.reveal');
+                const revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                revealElements.forEach(el => { revealObserver.observe(el); });
+            };
+
+            const animateValue = (obj, start, end, duration, lang) => {
+                let startTimestamp = null;
+                const locale = lang === 'ar' ? 'ar-EG' : 'en-US';
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString(locale) + obj.dataset.unit;
+                    if (progress < 1) window.requestAnimationFrame(step);
+                };
+                window.requestAnimationFrame(step);
+            };
+
+            const setupTechDetails = (lang) => {
+                const cwCard = document.getElementById('cw-card');
+                const mbrCard = document.getElementById('mbr-card');
+                const techDetails = document.getElementById('tech-details');
+                const techData = {
+                    en: {
+                        cw: `<h5 class="font-bold text-lg text-green-800 mb-3">Constructed Wetland (CW) Details</h5><ul class="space-y-2 text-sm"><li><strong>ECP Grade:</strong> C, D</li><li><strong>Pathogen Removal:</strong> 1-2 log (Low-Moderate)</li><li><strong>Land Footprint:</strong> Large (3-5 m²/PE)</li><li><strong>Capital/Operational Cost:</strong> Low-Medium / Very Low</li><li><strong>Energy Use:</strong> Very Low</li><li><strong>Ideal For:</strong> Non-food crops, Timber, Forage</li></ul>`,
+                        mbr: `<h5 class="font-bold text-lg text-gray-800 mb-3">Membrane Bioreactor (MBR) Details</h5><ul class="space-y-2 text-sm"><li><strong>ECP Grade:</strong> A, B, C</li><li><strong>Pathogen Removal:</strong> >4-6 log (Very High)</li><li><strong>Land Footprint:</strong> Very Small (<0.5 m²/PE)</li><li><strong>Capital/Operational Cost:</strong> High / Medium-High</li><li><strong>Energy Use:</strong> High</li><li><strong>Ideal For:</strong> Fruits, Cooked Vegetables, Nurseries</li></ul>`
+                    },
+                    ar: {
+                        cw: `<h5 class="font-bold text-lg text-green-800 mb-3">تفاصيل الأراضي الرطبة المُنشأة (CW)</h5><ul class="space-y-2 text-sm text-right list-disc list-inside"><li><strong>درجة الكود المصري:</strong> C, D</li><li><strong>إزالة مسببات الأمراض:</strong> 1-2 لوغاريتم (منخفضة إلى متوسطة)</li><li><strong>المساحة المطلوبة:</strong> كبيرة (3-5 م²/مكافئ شخص)</li><li><strong>التكلفة الرأسمالية/التشغيلية:</strong> منخفضة-متوسطة / منخفضة جدًا</li><li><strong>استهلاك الطاقة:</strong> منخفض جدًا</li><li><strong>مثالية لـ:</strong> المحاصيل غير الغذائية، الأخشاب، الأعلاف</li></ul>`,
+                        mbr: `<h5 class="font-bold text-lg text-gray-800 mb-3">تفاصيل المفاعل الحيوي الغشائي (MBR)</h5><ul class="space-y-2 text-sm text-right list-disc list-inside"><li><strong>درجة الكود المصري:</strong> A, B, C</li><li><strong>إزالة مسببات الأمراض:</strong> >4-6 لوغاريتم (عالية جدًا)</li><li><strong>المساحة المطلوبة:</strong> صغيرة جدًا (<0.5 م²/مكافئ شخص)</li><li><strong>التكلفة الرأسمالية/التشغيلية:</strong> عالية / متوسطة-مرتفعة</li><li><strong>استهلاك الطاقة:</strong> مرتفع</li><li><strong>مثالية لـ:</strong> الفواكه، الخضروات المطبوخة، المشاتل</li></ul>`
+                    }
+                };
+                cwCard.addEventListener('click', () => {
+                    techDetails.innerHTML = techData[lang].cw;
+                    cwCard.classList.add('border-green-600', 'bg-green-50', 'shadow-md');
+                    mbrCard.classList.remove('border-blue-600', 'bg-blue-50', 'shadow-md');
+                });
+                mbrCard.addEventListener('click', () => {
+                    techDetails.innerHTML = techData[lang].mbr;
+                    mbrCard.classList.add('border-blue-600', 'bg-blue-50', 'shadow-md');
+                    cwCard.classList.remove('border-green-600', 'bg-green-50', 'shadow-md');
+                });
+                cwCard.click();
+            };
+
+            const setupEcpNavigator = (lang) => {
+                const ecpButtons = document.querySelectorAll('.ecp-button');
+                const ecpDetails = document.getElementById('ecp-details');
+                const ecpData = {
+                    en: {
+                        'A': { title: 'Grade A: Highest Quality', params: 'TSS: <15 mg/L, Turbidity: <5 NTU', crops: 'Public parks, landscapes, and fruits eaten fresh without a peel (e.g., apples, grapes, peaches).' },
+                        'B': { title: 'Grade B: High Quality', params: 'TSS: <30 mg/L, Fecal Coliforms: <1000 CFU/100mL', crops: 'Dry grains (wheat, corn), cooked vegetables, and fruits with peels (e.g., citrus, olives, mangoes, palms).' },
+                        'C': { title: 'Grade C: Medium Quality', params: 'TSS: <50 mg/L', crops: 'Forage crops for animals, ornamental plants for nurseries, and non-food seeds.' },
+                        'D': { title: 'Grade D: Industrial Quality', params: 'TSS: <300 mg/L', crops: 'Crops for biomass/biofuel (jatropha), cellulose production, and timber trees (camphor, mahogany).' }
+                    },
+                    ar: {
+                         'A': { title: 'الدرجة أ: أعلى جودة', params: 'TSS: <15 مجم/لتر، العكارة: <5 NTU', crops: 'الحدائق العامة، المناظر الطبيعية، والفواكه التي تؤكل طازجة بدون قشر (مثل التفاح، العنب، الخوخ).' },
+                        'B': { title: 'الدرجة ب: جودة عالية', params: 'TSS: <30 مجم/لتر، القولونيات البرازية: <1000 CFU/100mL', crops: 'الحبوب الجافة (القمح، الذرة)، الخضروات المطبوخة، والفواكه ذات القشور (مثل الحمضيات، الزيتون، المانجو، النخيل).' },
+                        'C': { title: 'الدرجة ج: جودة متوسطة', params: 'TSS: <50 مجم/لتر', crops: 'محاصيل الأعلاف للحيوانات، نباتات الزينة للمشاتل، والبذور غير الغذائية.' },
+                        'D': { title: 'الدرجة د: جودة صناعية', params: 'TSS: <300 مجم/لتر', crops: 'محاصيل الكتلة الحيوية/الوقود الحيوي (الجتروفا)، إنتاج السليلوز، وأشجار الأخشاب (الكافور، الماهوجني).' }
+                    }
+                };
+                const updateEcpDetails = (grade) => {
+                    const data = ecpData[lang][grade];
+                    ecpDetails.innerHTML = `<h4 class="font-bold text-xl text-blue-800 mb-2">${data.title}</h4><p class="text-sm font-mono text-blue-600 mb-3 ${lang === 'ar' ? 'text-left' : ''}">${data.params}</p><p class="text-gray-700">${data.crops}</p>`;
+                }
+                ecpButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        ecpButtons.forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
+                        button.classList.add('active', 'bg-blue-600', 'text-white');
+                        updateEcpDetails(button.dataset.grade);
+                    });
+                });
+                ecpButtons[0].click();
+            };
+
+            const recreateCharts = (lang) => {
+                if (waterCrisisChart) waterCrisisChart.destroy();
+                if (benefitsChart) benefitsChart.destroy();
+
+                const waterCrisisCtx = document.getElementById('waterCrisisChart').getContext('2d');
+                waterCrisisChart = new Chart(waterCrisisCtx, {
+                    type: 'line',
+                    data: {
+                        labels: lang === 'ar' ? ['(متوقع) 2025', '2020', '2010', '2000', '1990'] : ['1990', '2000', '2010', '2020', '2025 (Proj.)'],
+                        datasets: [{
+                            label: lang === 'ar' ? 'نصيب الفرد من المياه (م³)' : 'Per Capita Water Availability (m³)',
+                            data: [500, 610, 800, 1100, 1600].reverse(),
+                            borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: false, title: { display: true, text: lang === 'ar' ? 'متر مكعب (م³)' : 'Cubic Meters (m³)', font: { family: lang === 'ar' ? 'Cairo' : 'Inter' } } },
+                                  x: { ticks: { font: { family: lang === 'ar' ? 'Cairo' : 'Inter' } } } },
+                        plugins: { legend: { position: 'top', labels: { font: { family: lang === 'ar' ? 'Cairo' : 'Inter' } } } }
+                    }
+                });
+
+                const benefitsCtx = document.getElementById('benefitsChart').getContext('2d');
+                benefitsChart = new Chart(benefitsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: lang === 'ar' ? ['مدينتي، مصر', 'دلتا أغرار، صربيا', 'دراسة إندونيسية', 'واشنطن، الولايات المتحدة'] : ['Madinaty, Egypt', 'Delta Agrar, Serbia', 'Indonesian Study', 'Washington, USA'],
+                        datasets: [
+                            { label: lang === 'ar' ? 'وفورات المياه (%)' : 'Water Savings (%)', data: [50, 17, 47.8, 52], backgroundColor: '#60a5fa' },
+                            { label: lang === 'ar' ? 'زيادة المحصول (%)' : 'Yield Increase (%)', data: [0, 0, 34.9, 0], backgroundColor: '#34d399' },
+                            { label: lang === 'ar' ? 'وفورات العمالة/التكلفة (%)' : 'Labor/Cost Savings (%)', data: [0, 75, 50, 22], backgroundColor: '#fbbf24' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: lang === 'ar' ? 'النسبة المئوية (%)' : 'Percentage (%)', font: {family: lang === 'ar' ? 'Cairo' : 'Inter'} }, ticks: { font: { family: lang === 'ar' ? 'Cairo' : 'Inter' } } },
+                            x: { ticks: { font: { family: lang === 'ar' ? 'Cairo' : 'Inter' } } }
+                        },
+                        plugins: {
+                            legend: { position: 'top', labels: { font: { family: lang === 'ar' ? 'Cairo' : 'Inter' } } },
+                            tooltip: {
+                                titleFont: { family: lang === 'ar' ? 'Cairo' : 'Inter' }, bodyFont: { family: lang === 'ar' ? 'Cairo' : 'Inter' }, footerFont: { family: lang === 'ar' ? 'Cairo' : 'Inter' },
+                                callbacks: {
+                                    footer: function(tooltipItems) {
+                                        let study = tooltipItems[0].label;
+                                        let notes = { 
+                                            en: {'Madinaty, Egypt': 'Focus on urban green space.', 'Delta Agrar, Serbia': 'Reduced field visits by 4x.', 'Indonesian Study': 'Improved benefit-cost ratio.', 'Washington, USA': '22% higher profits recorded.'},
+                                            ar: {'مدينتي، مصر': 'التركيز على المساحات الخضراء الحضرية.', 'دلتا أغرار، صربيا': 'تقليل زيارات الحقل 4 مرات.', 'دراسة إندونيسية': 'تحسين نسبة الفائدة إلى التكلفة.', 'واشنطن، الولايات المتحدة': 'تسجيل أرباح أعلى بنسبة 22%.'}
+                                        };
+                                        return notes[lang][study] || '';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+
+            // Initial Load
+            setLanguage('ar');
+
+            document.getElementById('lang-switcher').addEventListener('click', toggleLanguage);
+            document.getElementById('mobile-lang-switcher').addEventListener('click', toggleLanguage);
             
             // Mobile Menu Toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -561,235 +602,6 @@
             mobileMenuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
             });
-
-            // Navigation scroll highlighting
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.4 };
-            const navObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            const href = link.getAttribute('href');
-                            if (href === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, observerOptions);
-            sections.forEach(section => { navObserver.observe(section); });
-
-            // Scroll Reveal Animations
-            const revealElements = document.querySelectorAll('.reveal');
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            revealElements.forEach(el => { revealObserver.observe(el); });
-            
-            // Animate numbers
-            const animateValue = (obj, start, end, duration) => {
-                let startTimestamp = null;
-                const step = (timestamp) => {
-                    if (!startTimestamp) startTimestamp = timestamp;
-                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('ar-EG') + obj.dataset.unit;
-                    if (progress < 1) window.requestAnimationFrame(step);
-                };
-                window.requestAnimationFrame(step);
-            };
-            const statsObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const el = entry.target;
-                        const targetVal = parseInt(el.dataset.value);
-                        animateValue(el, 0, targetVal, 1500);
-                        statsObserver.unobserve(el);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            document.getElementById('water-per-capita').dataset.value = '610';
-            document.getElementById('water-per-capita').dataset.unit = ' م³';
-            document.getElementById('agri-water-usage').dataset.value = '80';
-            document.getElementById('agri-water-usage').dataset.unit = '%';
-            document.getElementById('food-imports').dataset.value = '55';
-            document.getElementById('food-imports').dataset.unit = '%';
-            
-            statsObserver.observe(document.getElementById('water-per-capita'));
-            statsObserver.observe(document.getElementById('agri-water-usage'));
-            statsObserver.observe(document.getElementById('food-imports'));
-
-            // Chart.js: Water Crisis Chart
-            const waterCrisisCtx = document.getElementById('waterCrisisChart').getContext('2d');
-            new Chart(waterCrisisCtx, {
-                type: 'line',
-                data: {
-                    labels: ['(متوقع) 2025', '2020', '2010', '2000', '1990'],
-                    datasets: [{
-                        label: 'نصيب الفرد من المياه (م³)',
-                        data: [500, 610, 800, 1100, 1600],
-                        borderColor: '#2563eb',
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: false, title: { display: true, text: 'متر مكعب (م³)', font: { family: 'Cairo'} } },
-                              x: { ticks: { font: { family: 'Cairo' } } }
-                    },
-                    plugins: { legend: { position: 'top', labels: { font: { family: 'Cairo' } } } }
-                }
-            });
-            
-            // Solution Section Interaction
-            const solutionCards = document.querySelectorAll('.solution-card');
-            const solutionImage = document.getElementById('solution-image');
-            const solutionImages = {
-                'solution-1': 'https://placehold.co/600x450/bee3f8/2c5282?text=التجميع',
-                'solution-2': 'https://placehold.co/600x450/d6bcfa/44337a?text=التنقية',
-                'solution-3': 'https://placehold.co/600x450/a7f3d0/047857?text=التحكم+الذكي',
-                'solution-4': 'https://placehold.co/600x450/fef08a/854d0e?text=الذكاء+الاصطناعي+والطاقة',
-            };
-
-            solutionCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    solutionCards.forEach(c => {
-                        c.classList.remove('border-blue-500', 'bg-white', 'shadow-lg');
-                        c.querySelector('.solution-desc').classList.add('hidden');
-                    });
-                    card.classList.add('border-blue-500', 'bg-white', 'shadow-lg');
-                    card.querySelector('.solution-desc').classList.remove('hidden');
-                    solutionImage.src = solutionImages[card.id];
-                });
-            });
-            solutionCards[0].click();
-
-            // Engineering Tabs
-            const techTabs = document.querySelectorAll('.tech-tab');
-            const techTabContents = {
-                purification: document.getElementById('tab-content-purification'),
-                iot: document.getElementById('tab-content-iot'),
-                ai: document.getElementById('tab-content-ai')
-            };
-            techTabs.forEach(button => {
-                button.addEventListener('click', () => {
-                    techTabs.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    Object.values(techTabContents).forEach(content => content.classList.add('hidden'));
-                    techTabContents[button.dataset.tab].classList.remove('hidden');
-                });
-            });
-
-            // Engineering - Purification Tech Details
-            const cwCard = document.getElementById('cw-card');
-            const mbrCard = document.getElementById('mbr-card');
-            const techDetails = document.getElementById('tech-details');
-            const techData = {
-                cw: `
-                    <h5 class="font-bold text-lg text-green-800 mb-3">تفاصيل الأراضي الرطبة المُنشأة (CW)</h5>
-                    <ul class="space-y-2 text-sm text-right list-disc list-inside">
-                        <li><strong>درجة الكود المصري:</strong> C, D</li>
-                        <li><strong>إزالة مسببات الأمراض:</strong> 1-2 لوغاريتم (منخفضة إلى متوسطة)</li>
-                        <li><strong>المساحة المطلوبة:</strong> كبيرة (3-5 م²/مكافئ شخص)</li>
-                        <li><strong>التكلفة الرأسمالية/التشغيلية:</strong> منخفضة-متوسطة / منخفضة جدًا</li>
-                        <li><strong>استهلاك الطاقة:</strong> منخفض جدًا</li>
-                        <li><strong>مثالية لـ:</strong> المحاصيل غير الغذائية، الأخشاب، الأعلاف</li>
-                    </ul>`,
-                mbr: `
-                    <h5 class="font-bold text-lg text-gray-800 mb-3">تفاصيل المفاعل الحيوي الغشائي (MBR)</h5>
-                     <ul class="space-y-2 text-sm text-right list-disc list-inside">
-                        <li><strong>درجة الكود المصري:</strong> A, B, C</li>
-                        <li><strong>إزالة مسببات الأمراض:</strong> >4-6 لوغاريتم (عالية جدًا)</li>
-                        <li><strong>المساحة المطلوبة:</strong> صغيرة جدًا (<0.5 م²/مكافئ شخص)</li>
-                        <li><strong>التكلفة الرأسمالية/التشغيلية:</strong> عالية / متوسطة-مرتفعة</li>
-                        <li><strong>استهلاك الطاقة:</strong> مرتفع</li>
-                        <li><strong>مثالية لـ:</strong> الفواكه، الخضروات المطبوخة، المشاتل</li>
-                    </ul>`
-            };
-            cwCard.addEventListener('click', () => {
-                techDetails.innerHTML = techData.cw;
-                cwCard.classList.add('border-green-600', 'bg-green-50', 'shadow-md');
-                mbrCard.classList.remove('border-blue-600', 'bg-blue-50', 'shadow-md');
-            });
-            mbrCard.addEventListener('click', () => {
-                techDetails.innerHTML = techData.mbr;
-                mbrCard.classList.add('border-blue-600', 'bg-blue-50', 'shadow-md');
-                cwCard.classList.remove('border-green-600', 'bg-green-50', 'shadow-md');
-            });
-            cwCard.click();
-
-            
-            // ECP Navigator Interaction
-            const ecpButtons = document.querySelectorAll('.ecp-button');
-            const ecpDetails = document.getElementById('ecp-details');
-            const ecpData = {
-                'A': { title: 'الدرجة أ: أعلى جودة', params: 'TSS: <15 مجم/لتر، العكارة: <5 NTU', crops: 'الحدائق العامة، المناظر الطبيعية، والفواكه التي تؤكل طازجة بدون قشر (مثل التفاح، العنب، الخوخ).' },
-                'B': { title: 'الدرجة ب: جودة عالية', params: 'TSS: <30 مجم/لتر، القولونيات البرازية: <1000 CFU/100mL', crops: 'الحبوب الجافة (القمح، الذرة)، الخضروات المطبوخة، والفواكه ذات القشور (مثل الحمضيات، الزيتون، المانجو، النخيل).' },
-                'C': { title: 'الدرجة ج: جودة متوسطة', params: 'TSS: <50 مجم/لتر', crops: 'محاصيل الأعلاف للحيوانات، نباتات الزينة للمشاتل، والبذور غير الغذائية.' },
-                'D': { title: 'الدرجة د: جودة صناعية', params: 'TSS: <300 مجم/لتر', crops: 'محاصيل الكتلة الحيوية/الوقود الحيوي (الجتروفا)، إنتاج السليلوز، وأشجار الأخشاب (الكافور، الماهوجني).' }
-            };
-            const updateEcpDetails = (grade) => {
-                const data = ecpData[grade];
-                ecpDetails.innerHTML = `<h4 class="font-bold text-xl text-blue-800 mb-2">${data.title}</h4><p class="text-sm font-mono text-blue-600 mb-3 text-left">${data.params}</p><p class="text-gray-700">${data.crops}</p>`;
-            }
-            ecpButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    ecpButtons.forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
-                    button.classList.add('active', 'bg-blue-600', 'text-white');
-                    updateEcpDetails(button.dataset.grade);
-                });
-            });
-            ecpButtons[0].click();
-
-            // Chart.js: Benefits Chart
-            const benefitsCtx = document.getElementById('benefitsChart').getContext('2d');
-            new Chart(benefitsCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['مدينتي، مصر', 'دلتا أغرار، صربيا', 'دراسة إندونيسية', 'واشنطن، الولايات المتحدة'],
-                    datasets: [
-                        { label: 'وفورات المياه (%)', data: [50, 17, 47.8, 52], backgroundColor: '#60a5fa' },
-                        { label: 'زيادة المحصول (%)', data: [0, 0, 34.9, 0], backgroundColor: '#34d399' },
-                        { label: 'وفورات العمالة/التكلفة (%)', data: [0, 75, 50, 22], backgroundColor: '#fbbf24' }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'النسبة المئوية (%)', font: {family: 'Cairo'} } , ticks: { font: { family: 'Cairo' } } },
-                        x: { ticks: { font: { family: 'Cairo' } } }
-                    },
-                    plugins: {
-                        legend: { position: 'top', labels: { font: { family: 'Cairo' } } },
-                        tooltip: {
-                            titleFont: { family: 'Cairo' }, bodyFont: { family: 'Cairo' }, footerFont: { family: 'Cairo' },
-                            callbacks: {
-                                footer: function(tooltipItems) {
-                                    let study = tooltipItems[0].label;
-                                    let notes = { 'مدينتي، مصر': 'التركيز على المساحات الخضراء الحضرية.', 'دلتا أغرار، صربيا': 'تقليل زيارات الحقل 4 مرات.', 'دراسة إندونيسية': 'تحسين نسبة الفائدة إلى التكلفة.', 'واشنطن، الولايات المتحدة': 'تسجيل أرباح أعلى بنسبة 22%.' };
-                                    return notes[study] || '';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Roadmap Accordion Interaction
-            document.querySelectorAll('.roadmap-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const item = header.parentElement;
-                    item.classList.toggle('active');
-                });
-            });
-
         });
     </script>
 </body>
